@@ -1,7 +1,7 @@
 var myApp = angular.module("app.account", []);
 
 
-myApp.controller('AccountController', function($scope) {
+myApp.controller('LoginController', function($scope) {
     // Parameter Start
     $scope.test = "test";
     // Parameter End
@@ -9,6 +9,10 @@ myApp.controller('AccountController', function($scope) {
     // Function Start
     $scope.init = function() {
     };
+
+    $scope.login = function(){
+        console.log("cli");
+    }
     // Function End
 
     // Directive Start
