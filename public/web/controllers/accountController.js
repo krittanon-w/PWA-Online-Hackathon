@@ -27,9 +27,6 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
             }
         })
     }
-
-
-
     // Function End
 
     // Directive Start
@@ -38,12 +35,12 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
 });
 
 
-myApp.controller('ProfileController', function($scope, accountService) {
+myApp.controller('ProfileController', function($scope, userService) {
     // Parameter Start
     $scope.form = {
         displayName: 'sss',
-        name: '',
-        lastname: '',
+        firstName: '',
+        lastName: '',
         age: '',
         gender: '',
         email: 'dsds',
@@ -56,7 +53,9 @@ myApp.controller('ProfileController', function($scope, accountService) {
     };
 
     $scope.update = function(){
-        console.log($scope.form );
+        userService.setInfo($scope.form).then(function(){
+            Materialize.toast('Update Success', 4000); 
+        });
     };
     // Function End
 
