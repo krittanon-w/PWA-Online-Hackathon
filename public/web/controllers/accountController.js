@@ -18,7 +18,7 @@ myApp.controller('LoginController', function($scope, accountService) {
         })
         .catch(function(err){
             console.log(err);
-        });  
+        });
     };
 
     $scope.login = function(){

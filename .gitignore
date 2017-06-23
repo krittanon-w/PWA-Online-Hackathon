@@ -60,3 +60,4 @@ typings/
 # vim temp files
 .*~
 *~
+.*.sw*
