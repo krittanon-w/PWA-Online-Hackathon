@@ -26,6 +26,7 @@ const auth = {
             console.log('getUser: success', user)
             return user
         } catch (error) {
+            console.log('getUser: failed')
             return error
         }
     },
@@ -38,6 +39,7 @@ const auth = {
             console.log('getUserInfo: success', userInfo)
             return userInfo
         } catch (error) {
+            console.log('getUserInfo: failed')
             return error
         }
     },
