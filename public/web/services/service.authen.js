@@ -5,7 +5,7 @@ const auth = {
             .then((result) => {
                 console.log('login: success', result)
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log('login: failed', error)
             })
     },
@@ -15,21 +15,31 @@ const auth = {
             .then(() => {
                 console.log('logout: success')
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log('logout: failed', error)
             })
     },
     getUser() {
-        console.log('getUser: called')
-        var user = firebase.auth().currentUser
-        console.log('getUser: success', user)
-        return user
+        try {
+            console.log('getUser: called')
+            var user = firebase.auth().currentUser
+            console.log('getUser: success', user)
+            return user
+        } catch (error) {
+            return error
+        }
     },
     getUserInfo() {
-        console.log('getUserInfo: ')
-        var userInfo = this.getUser().providerData[0]
-        console.log('getUserInfo: ', userInfo)
-        return userInfo
+        try {
+            console.log('getUserInfo: called')
+            var userInfo = null
+            var user = this.getUser()
+            if (user != null) userInfo = user.providerData[0]
+            console.log('getUserInfo: success', userInfo)
+            return userInfo
+        } catch (error) {
+            return error
+        }
     },
     onStageChange() {
         // jest def
