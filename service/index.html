@@ -7,7 +7,9 @@
 </head>
 
 <body>
-    <input type="button" onclick="login()" value="Login">
+    <input type="button" onclick="_login()" value="Login">
+    <input type="button" onclick="auth.logout()" value="Logout">
+    <input type="button" onclick="auth.getUser()" value="getUser">
     <script>
         $(document).ready(function () {
 
@@ -24,10 +26,12 @@
 
             firebase.initializeApp(config)
 
-            alert('ready')
+            console.log('ready')
         });
     </script>
     <script src="./service.authen.js"></script>
+    <script src="./service.authen.test.js"></script>
 </body>
 
+<!--</html>-->
 <!--</html>-->
