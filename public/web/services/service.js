@@ -1,6 +1,7 @@
 var myApp = angular.module("app.service", []);
 
 myApp.service('accountService', accountService);
+myApp.service('urlService', urlService);
 
 function accountService($firebaseAuth) {
     return {
@@ -13,6 +14,14 @@ function accountService($firebaseAuth) {
                 .catch(function (error) {
                     console.log(error)
                 });
+        },
+    };
+}
+
+function urlService($location) {
+    return {
+        server: function() {
+            return $location.protocol() + '://'+ $location.host() + ':' + $location.port() + '/#!';
         },
     };
 }
