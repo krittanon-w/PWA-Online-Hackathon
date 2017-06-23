@@ -25,11 +25,11 @@ const auth = {
         console.log('getUser: success', user)
         return user
     },
-    getUserId() {
-        console.log('getUserId: ')
-        var id = this.getUser().uid
-        console.log('getUserId: ', id)
-        return id
+    getUserInfo() {
+        console.log('getUserInfo: ')
+        var userInfo = this.getUser().providerData[0]
+        console.log('getUserInfo: ', userInfo)
+        return userInfo
     },
     onStageChange() {
         // jest def
