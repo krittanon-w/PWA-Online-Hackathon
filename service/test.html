@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <input type="button" onclick="login()" value="Login">
+    <script>
+        // $(document).ready(function () {
+
+        var $me = null
+
+        var config = {
+            apiKey: "AIzaSyCVP--nIngflDoXV5qBKSPzzSyy712tpDA",
+            authDomain: "drm-pwa-hkt.firebaseapp.com",
+            databaseURL: "https://drm-pwa-hkt.firebaseio.com",
+            projectId: "drm-pwa-hkt",
+            storageBucket: "drm-pwa-hkt.appspot.com",
+            messagingSenderId: "640169615174"
+        };
+        firebase.initializeApp(config);
+
+        function login() {
+            firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+                .then(function (res) {
+                    // console.log('signInRes',res)
+                    console.log('login success', res)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+        // });
+    </script>
+</body>
+
+</html>
