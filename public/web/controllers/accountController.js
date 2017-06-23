@@ -24,6 +24,19 @@ myApp.controller('LoginController', function($scope, accountService) {
     $scope.login = function(){
         accountService.login();
     }
+
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+    .then(function(){
+        return messaging.getToken();
+    })
+    .then(function(token){
+        console.log(token);
+        $scope.token = token;
+    })
+    .catch(function(err){
+        console.log(err);
+    }); 
     // Function End
 
     // Directive Start
