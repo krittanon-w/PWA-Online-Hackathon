@@ -11,18 +11,13 @@ app.directive('header', function () {
 
             // Start Parameter
             $scope.link = {
-                detail: "",
-                home: "",
+                profile: "",
             }
             // End Parameter
 
             // Start Function
             $scope.init = function(){
-                $scope.link.rtdata = urlService.server()+"/rtdata";
-                $scope.link.vibration = urlService.server()+"/vibration";
-                $scope.link.noti = urlService.server()+"/noti";
-                $scope.link.gps = urlService.server()+"/gps";
-                $scope.link.home = urlService.server()+"/";
+                $scope.link.profile = urlService.server()+"/profile";
             }
 
             // End Function

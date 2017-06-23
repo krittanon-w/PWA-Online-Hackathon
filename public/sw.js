@@ -3,6 +3,7 @@ var cacheName = 'appCachev1';
 var fileName = ['/', 
         '/index.html',
         '/manifest.json',
+        '/firebase-messaging-sw.js',
         '/web/app.js',
         '/bower_components/jquery/dist/jquery.min.js',
         '/bower_components/angular/angular.min.js',
@@ -11,7 +12,10 @@ var fileName = ['/',
         '/web/services/service.js',
         '/web/services/factory.js',
         '/web/controllers/accountController.js',
-        '/web/views/login.html', ];
+        '/web/diractive/header.js',
+        '/web/views/login.html',
+        '/web/views/profile.html',
+        '/web/views/layout/header.html', ];
         
 self.addEventListener('install',function(event){
     event.waitUntil(

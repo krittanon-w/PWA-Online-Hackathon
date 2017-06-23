@@ -4,6 +4,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $routeProvider.when('/', {
         templateUrl: './web/views/login.html',
         controller: 'LoginController',
+    }).when('/profile', {
+        templateUrl: './web/views/profile.html',
+        controller: 'ProfileController',
     })
 }]);
 

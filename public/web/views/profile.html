@@ -1,0 +1,42 @@
+<header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
+
+<div class="container">
+    <a href="https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393">link</a>
+    <div class="row">
+    <div class="col s12">
+        <div class="input-field col s12">
+            <input id="display_name" type="text" class="validate">
+            <label for="display_name">Display Name</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Last Name</label>
+        </div>
+         <div class="input-field col s12">
+            <select>
+            <option value="" disabled selected>Choose your sex</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Other</option>
+            </select>
+        </div>
+        <div class="input-field col s12">
+            <input id="age"  type="number" name="quantity" min="18" max="100" class="validate">
+            <label for="age">Age</label>
+        </div>
+    </div>
+    <button class="btn waves-effect waves-light z-depth-1 full-width" type="submit" name="action" ng-click="update()">
+        Update
+    </button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('select').material_select();
+  });
+</script>
