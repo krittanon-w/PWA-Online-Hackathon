@@ -7,9 +7,10 @@
 </head>
 
 <body>
-    <input type="button" onclick="_login()" value="Login">
+    <input type="button" onclick="auth.login()" value="Login">
     <input type="button" onclick="auth.logout()" value="Logout">
     <input type="button" onclick="auth.getUser()" value="getUser">
+    <input type="button" onclick="auth.getUserId()" value="getUserId">
     <script>
         $(document).ready(function () {
 
@@ -32,6 +33,3 @@
     <script src="./service.authen.js"></script>
     <script src="./service.authen.test.js"></script>
 </body>
-
-<!--</html>-->
-<!--</html>-->

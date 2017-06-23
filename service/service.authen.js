@@ -1,5 +1,5 @@
 const auth = {
-    login: function () {
+    login() {
         console.log('login: called')
         return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
             .then((result) => {
@@ -9,7 +9,7 @@ const auth = {
                 console.log('login: failed', error)
             })
     },
-    logout: function () {
+    logout() {
         console.log('logout: called')
         return firebase.auth().signOut()
             .then(() => {
@@ -21,31 +21,17 @@ const auth = {
     },
     getUser() {
         console.log('getUser: called')
-        return new Promise((resolve, reject) => {
-            var user = firebase.auth().currentUser
-            if (user != null) {
-                console.log('getUser: success', user)
-                resolve(user);
-            } else {
-                console.log('getUser: failed')
-                reject(Error("unknow user"));
-            }
-        });
+        var user = firebase.auth().currentUser
+        console.log('getUser: success', user)
+        return user
+    },
+    getUserId() {
+        console.log('getUserId: ')
+        var id = this.getUser().uid
+        console.log('getUserId: ', id)
+        return id
+    },
+    onStageChange() {
+        // jest def
     }
 }
-
-
-
-// function login() {
-//     firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
-//         .then(function (res) {
-//             console.log('login success', res)
-//         })
-//         .catch(function (error) {
-//             console.log(error)
-//         })
-// }
-
-// function getCuttentUser() {
-//     var user = firebase.auth().currentUser
-// }
