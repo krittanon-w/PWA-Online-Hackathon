@@ -7,7 +7,7 @@ app.directive('header', function () {
           invokes: '=?',
           configs: '=?',
         },
-        controller: ['$scope', '$filter', 'urlService', function ($scope, $filter, urlService) {
+        controller: ['$scope', '$filter', 'urlService', 'accountService', function ($scope, $filter, urlService, accountService) {
 
             // Start Parameter
             $scope.link = {
@@ -18,6 +18,12 @@ app.directive('header', function () {
             // Start Function
             $scope.init = function(){
                 $scope.link.profile = urlService.server()+"/profile";
+            }
+
+            $scope.logout = function(){
+                accountService.logout().then(function(){
+                    window.location.href = urlService.server()+"/";
+                })
             }
 
             // End Function

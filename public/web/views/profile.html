@@ -1,31 +1,32 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
 
 <div class="container">
-    <a href="https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393">link</a>
     <div class="row">
     <div class="col s12">
         <div class="input-field col s12">
-            <input id="display_name" type="text" class="validate">
-            <label for="display_name">Display Name</label>
+            <input ng-model="form.displayName" id="display_name" type="text" class="validate"  disabled>
         </div>
         <div class="input-field col s12">
-            <input id="first_name" type="text" class="validate">
+            <input ng-model="form.email" id="email" type="text" class="validate"  disabled>
+        </div>
+        <div class="input-field col s12">
+            <input ng-model="form.name" id="first_name" type="text" class="validate">
             <label for="first_name">First Name</label>
         </div>
         <div class="input-field col s12">
-            <input id="last_name" type="text" class="validate">
+            <input ng-model="form.lastname"  id="last_name" type="text" class="validate">
             <label for="last_name">Last Name</label>
         </div>
          <div class="input-field col s12">
-            <select>
-            <option value="" disabled selected>Choose your sex</option>
-            <option value="1">Male</option>
-            <option value="2">Female</option>
-            <option value="3">Other</option>
+            <select ng-model="form.gender" >
+            <option value="" disabled selected>Choose your gander</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
             </select>
         </div>
         <div class="input-field col s12">
-            <input id="age"  type="number" name="quantity" min="18" max="100" class="validate">
+            <input ng-model="form.age" id="age" type="number" name="quantity" min="18" max="100" class="validate">
             <label for="age">Age</label>
         </div>
     </div>

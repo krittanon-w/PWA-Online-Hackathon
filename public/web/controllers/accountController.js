@@ -1,42 +1,35 @@
 var myApp = angular.module("app.account", []);
 
 
-myApp.controller('LoginController', function($scope, accountService) {
+myApp.controller('LoginController', function($scope, $location, accountService, urlService) {
     // Parameter Start
     // Parameter End
 
     // Function Start
     $scope.init = function() {
         const messaging = firebase.messaging();
-        notification.requestPermission()
+        messaging.requestPermission()
         .then(function(){
             return messaging.getToken();
         })
         .then(function(token){
             console.log(token);
-            $scope.token = token;
         })
         .catch(function(err){
             console.log(err);
-        });
+        }); 
     };
 
     $scope.login = function(){
-        accountService.login();
+        accountService.login().then(function(){
+            if(accountService.getUser() != null){
+                window.location.href = urlService.server()+"/profile";
+            }
+        })
     }
 
-    const messaging = firebase.messaging();
-    messaging.requestPermission()
-    .then(function(){
-        return messaging.getToken();
-    })
-    .then(function(token){
-        console.log(token);
-        $scope.token = token;
-    })
-    .catch(function(err){
-        console.log(err);
-    }); 
+
+
     // Function End
 
     // Directive Start
@@ -47,7 +40,15 @@ myApp.controller('LoginController', function($scope, accountService) {
 
 myApp.controller('ProfileController', function($scope, accountService) {
     // Parameter Start
-    $scope.test = "test";
+    $scope.form = {
+        displayName: 'sss',
+        name: '',
+        lastname: '',
+        age: '',
+        gender: '',
+        email: 'dsds',
+        photoURL: '', 
+    }
     // Parameter End
 
     // Function Start
@@ -55,7 +56,7 @@ myApp.controller('ProfileController', function($scope, accountService) {
     };
 
     $scope.update = function(){
-
+        console.log($scope.form );
     };
     // Function End
 
