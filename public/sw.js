@@ -3,7 +3,6 @@ var cacheName = 'appCachev1';
 var fileName = ['/', 
         '/index.html',
         '/manifest.json',
-        '/firebase-messaging-sw.js',
         '/web/app.js',
         '/bower_components/jquery/dist/jquery.min.js',
         '/bower_components/angular/angular.min.js',
