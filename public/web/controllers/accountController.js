@@ -8,7 +8,7 @@ myApp.controller('LoginController', function($scope, accountService) {
     // Function Start
     $scope.init = function() {
         const messaging = firebase.messaging();
-        messaging.requestPermission()
+        notification.requestPermission()
         .then(function(){
             return messaging.getToken();
         })
