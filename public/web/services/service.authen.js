@@ -62,4 +62,16 @@ const user = {
         };
         return firebase.database().ref('users/' + userInfo.uid).set(userTmp);
     },
+    getInfo(uid) {
+        return firebase.database().ref('users/' + uid);
+    },
+    updateInfo() {
+        var userInfo = auth.getUserInfo();
+        var updates = {};
+        updates['/users/' + userInfo.uid + '/displayName'] = userInfo.displayName;
+        updates['/users/' + userInfo.uid + '/photoURL'] = userInfo.photoURL;
+        updates['/users/' + userInfo.uid + '/email'] = userInfo.email;
+
+        return firebase.database().ref().update(updates);
+    },
 };
