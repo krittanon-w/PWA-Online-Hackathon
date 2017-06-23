@@ -46,4 +46,20 @@ const auth = {
     onStageChange() {
         // jest def
     }
-}
+};
+
+const user = {
+    setInfo(inputInfo) {
+        var userInfo = auth.getUserInfo();
+        var userTmp = {
+            displayName: userInfo.displayName,
+            photoURL: userInfo.photoURL,
+            email: userInfo.email,
+            firstName: inputInfo.firstName,
+            lastName: inputInfo.lastName,
+            age: inputInfo.age,
+            gender: inputInfo.gender,
+        };
+        return firebase.database().ref('users/' + userInfo.uid).set(userTmp);
+    },
+};

@@ -17,18 +17,5 @@ function urlService($location) {
 }
 
 function userService() {
-    return {
-        setInfo(inputInfo) {
-            var userInfo = auth.getUserInfo();
-            return firebase.database().ref('/users/' + userInfo.id).set({
-                displayName: userInfo.displayName,
-                photoURL: userInfo.photoURL,
-                email: userInfo.email,
-                firstName: inputInfo.firstName,
-                lastName: inputInfo.lastName,
-                age: inputInfo.age,
-                gender: inputInfo.gender
-            });
-        },
-    };
+    return user;
 }
