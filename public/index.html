@@ -8,7 +8,20 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="./bower_components/materialize/css/materialize.min.css"  media="screen,projection"/>
   <meta charset="UTF-8" />
-  <title>Doremon</title>
+  
+  <meta name="viewport" content="width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EEEEEE">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="KOT">
+
+  <!-- Add to home screen for Window-->
+  <meta name="msapplication-TileColor" content="#EEEEEE">
+  <title>Doreamon</title>
 </head>
 
 <body ng-app="app" style="background-color: rgb(233, 235 ,238)">
@@ -23,7 +36,7 @@
   <!--firebase-->
   <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
   <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
-  
+
   <!--JS-->
   <script type="text/javascript" src="./bower_components/materialize/js/materialize.min.js"></script>
 

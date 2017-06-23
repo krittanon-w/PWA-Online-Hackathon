@@ -9,3 +9,28 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 
 
+app.run(function () {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(function(reg) {
+            // registration worked
+            console.log('Registration succeeded. Scope is ', reg);
+        }).catch(function(error) {
+            // registration failed
+            console.log('Registration failed with ' + error);
+        });
+    }
+    var config = {
+        apiKey: "AIzaSyCVP--nIngflDoXV5qBKSPzzSyy712tpDA",
+        authDomain: "drm-pwa-hkt.firebaseapp.com",
+        databaseURL: "https://drm-pwa-hkt.firebaseio.com",
+        projectId: "drm-pwa-hkt",
+        storageBucket: "drm-pwa-hkt.appspot.com",
+        messagingSenderId: "640169615174"
+    };
+    firebase.initializeApp(config);
+});
+
+
+
+
