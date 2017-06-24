@@ -140,15 +140,81 @@ const user = {
     },
 };
 
+
+const dtree = {
+    getTraningData() {
+        console.log("dtree.getTraningData: called")
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('dtree/trainingData').once('value')
+                .then(function (snapshots) {
+                    var tData = []
+                    snapshots.forEach((snapshot) => {
+                        var row = snapshot.val();
+                        tData.push(row)
+                    })
+                    resolve(tData);
+                }).catch((error) => {
+                    reject(error)
+                })
+        })
+    },
+    getPrediction(testData) {
+        console.log("dtree.getPrediction: called")
+        return new Promise((resolve, reject) => {
+            this.getTraningData()
+                .then((tData) => {
+                    var config = {
+                        trainingSet: tData,
+                        categoryAttr: 'sex',
+                        ignoredAttributes: ['person']
+                    }
+
+                    var decisionTree = new dt.DecisionTree(config)
+                    var numberOfTrees = 10;
+                    var randomForest = new dt.RandomForest(config, numberOfTrees)
+
+                    // var testData = testData
+
+                    var decisionTreePrediction = decisionTree.predict(testData)
+                    var randomForestPrediction = randomForest.predict(testData)
+
+                    resolve({
+                        decission: decisionTreePrediction,
+                        forest: randomForestPrediction
+                    })
+                })
+                .catch((error) => {
+
+                })
+        })
+    },
+    addTraningData(inputUserData) {
+        console.log("dtree.addTraningData: called")
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('dtree/trainingData').push(inputUserData)
+                .then((result) => {
+                    resolve(result)
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        })
+    }
+}
+
 const matching = {
-    getUsers() {
+    getUsers(type) {
         console.log("matching.getUsers: called")
         return new Promise((resolve, reject) => [
-            user.getUsers()
-            .then((users) => {
+            firebase.database().ref('users').once('value')
+            .then((snapshots) => {
+                var users = []
+                snapshots.forEach((snapshot) => {
+                    var row = snapshot.val();
+                    if (type == row.type) users.push(row)
+                })
                 resolve(users)
-            })
-            .catch((error) => {
+            }).catch((error) => {
                 reject(error)
             })
         ])

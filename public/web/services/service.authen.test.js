@@ -1,10 +1,84 @@
 $(document).ready(function () {
 
-    matching.getUsers()
-        .then((users) => {
+    // matching.getUsers()
+    //     .then((users) => {
+    //         console.log(users)
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //     })
+
+
+
+    // dtree.getTraningData()
+    //     .then((tData) => {
+    //         console.log(tData)
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //     })
+
+
+
+//    dtree.getPrediction({person: 'Homer', hairLength: 0, weight: 250, age: 36})
+//         .then((predic) => {
+//             console.log(predic)
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         })
+    matching.getUsers("A")
+        .then((users)=>{
             console.log(users)
         })
-        .catch((error) => {
+        .catch((error)=>{
             console.log(error)
         })
+
+        var data =
+    [{person: 'Homer', hairLength: 0, weight: 250, age: 36, sex: 'A'},
+     {person: 'Marge', hairLength: 10, weight: 150, age: 34, sex: 'B'},
+     {person: 'Bart', hairLength: 2, weight: 90, age: 10, sex: 'C'},
+     {person: 'Lisa', hairLength: 6, weight: 78, age: 8, sex: 'D'},
+     {person: 'Maggie', hairLength: 4, weight: 20, age: 1, sex: 'A'},
+     {person: 'Abe', hairLength: 1, weight: 170, age: 70, sex: 'C'},
+     {person: 'Abe', hairLength: 1, weight: 170, age: 70, sex: 'A'},
+     {person: 'Selma', hairLength: 8, weight: 160, age: 41, sex: 'B'},
+     {person: 'Otto', hairLength: 10, weight: 180, age: 38, sex: 'B'},
+     {person: 'Krusty', hairLength: 6, weight: 200, age: 45, sex: 'C'}];
+
+
+    //  for(var i =0 ; i<data.length; i++){
+    //         dtree.addTraningData(data[i])
+    //     .then((tData) => {
+    //         console.log(tData)
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //     })
+    //  }
+
+// Configuration
+var config = {
+    trainingSet: data,
+    categoryAttr: 'sex',
+    ignoredAttributes: ['person']
+};
+
+// Building Decision Tree
+var decisionTree = new dt.DecisionTree(config);
+
+// Building Random Forest
+var numberOfTrees = 5;
+var randomForest = new dt.RandomForest(config, numberOfTrees);
+
+// Testing Decision Tree and Random Forest
+var comic = {person: 'Comic guy', hairLength: 8, weight: 150, age: 38};
+
+var decisionTreePrediction = decisionTree.predict(comic);
+var randomForestPrediction = randomForest.predict(comic);
+
+// console.log(decisionTreePrediction)
+// console.log(randomForestPrediction)
+
 });
