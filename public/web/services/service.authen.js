@@ -5,7 +5,7 @@ const auth = {
         else if (provider == 'facebook') provider = new firebase.auth.FacebookAuthProvider()
         else if (provider == 'google') provider = new firebase.auth.GoogleAuthProvider()
         else provider = new firebase.auth.GoogleAuthProvider()
-        return firebase.auth().signInWithRedirect(provider)
+        return firebase.auth().signInWithPopup(provider)
             .then((result) => {
                 console.log('login: success', result)
             })
