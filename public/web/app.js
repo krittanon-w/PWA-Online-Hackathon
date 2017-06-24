@@ -1,4 +1,4 @@
-var app = angular.module('app', ['firebase', 'ngRoute', 'app.account', 'app.map', 'app.service', 'app.factory']);
+var app = angular.module('app', ['firebase', 'ngRoute', 'app.account', 'app.accost', 'app.service', 'app.factory']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.when('/', {
@@ -12,9 +12,17 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
              permission.check();
           },
         },
-    }).when('/map', {
-        templateUrl: './web/views/map.html',
-        controller: 'MapController',
+    }).when('/select', {
+        templateUrl: './web/views/select.html',
+        controller: 'SelectController',
+        resolve: {
+          function(permission){
+             permission.check();
+          },
+        },
+    }).when('/list', {
+        templateUrl: './web/views/list.html',
+        controller: 'ListController',
         resolve: {
           function(permission){
              permission.check();

@@ -13,11 +13,15 @@ app.directive('header', function () {
             $scope.link = {
                 profile: "",
                 map: "",
+                find: "",
+                select: "",
             }
             // End Parameter
 
             // Start Function
             $scope.init = function(){
+                $scope.link.select = urlService.server()+"/select";
+                $scope.link.list = urlService.server()+"/list";
                 $scope.link.profile = urlService.server()+"/profile";
                 $scope.link.map = urlService.server()+"/map";
             }
