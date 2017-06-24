@@ -63,7 +63,10 @@ const user = {
         return firebase.database().ref('users/' + userInfo.uid).set(userTmp);
     },
     getInfo(uid) {
-        return firebase.database().ref('users/' + uid);
+        return firebase.database().ref('users/' + uid).once('value')
+            .then(function(snapshot) {
+                console.log('Snapshot value: ', snapshot.val());
+            });
     },
     updateInfo() {
         var userInfo = auth.getUserInfo();
