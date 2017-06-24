@@ -12,12 +12,14 @@ app.directive('header', function () {
             // Start Parameter
             $scope.link = {
                 profile: "",
+                map: "",
             }
             // End Parameter
 
             // Start Function
             $scope.init = function(){
                 $scope.link.profile = urlService.server()+"/profile";
+                $scope.link.map = urlService.server()+"/map";
             }
 
             $scope.logout = function(){

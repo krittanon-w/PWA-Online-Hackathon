@@ -1,4 +1,4 @@
-var app = angular.module('app', ['firebase', 'ngRoute', 'app.account','app.service', 'app.factory']);
+var app = angular.module('app', ['firebase', 'ngRoute', 'app.account', 'app.map', 'app.service', 'app.factory']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.when('/', {
@@ -7,6 +7,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }).when('/profile', {
         templateUrl: './web/views/profile.html',
         controller: 'ProfileController',
+    }).when('/map', {
+        templateUrl: './web/views/map.html',
+        controller: 'MapController',
     })
 }]);
 
