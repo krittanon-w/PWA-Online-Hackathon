@@ -263,8 +263,50 @@ const matching = {
     },
 };
 
+const noti = {
+    notifyAddTalk($http, uid) {
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo()
+                .then((userInfo) => {
+                    user.getInfo(uid).
+                        then((oneInfo) => {
+                            var h = userInfo.gender === 'male' ? 'his' : 'her';
+                            var req = {
+                                method: 'POST',
+                                url: 'https://fcm.googleapis.com/fcm/send',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'key=AIzaSyAUNqwxh248KWyNpaeU7WD8uIsb6kENyh8'
+                                },
+                                data: {
+                                    notification: {
+                                        title: 'Doreamon Dating',
+                                        body: userInfo.displayName + ' has added you to ' + h + ' talk.'
+                                    },
+                                    to: oneInfo.notificationToken,
+                                },
+                            };
+
+                            $http(req).
+                                then((response) => {
+                                    console.log(response);
+                                    resolve(response);
+                                }).
+                                catch((response) => {
+                                    console.log(response);
+                                    reject(response);
+                                });
+                        })
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    },
+};
+
 const messaging = {
-    addTalk(uid) {
+    addTalk($http, uid) {
         console.log("messaging.addTalk: called");
         return new Promise((resolve, reject) => {
             var initMessage = {"00": {DoreamonSystem: "You've just created this chat room."}};
@@ -278,6 +320,7 @@ const messaging = {
 
                     firebase.database().ref('users').update(updates).
                         then((result) => {
+                            noti.notifyAddTalk($http, uid);
                             resolve(result);
                         }).
                         catch((error) => {
@@ -397,44 +440,3 @@ const messaging = {
     },
 };
 
-const noti = {
-    notifyAddTalk($http, uid) {
-        return new Promise((resolve, reject) => {
-            auth.getUserInfo()
-                .then((userInfo) => {
-                    user.getInfo(uid).
-                        then((oneInfo) => {
-                            var h = userInfo.gender === 'male' ? 'his' : 'her';
-                            var req = {
-                                method: 'POST',
-                                url: 'https://fcm.googleapis.com/fcm/send',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': 'key=AIzaSyAUNqwxh248KWyNpaeU7WD8uIsb6kENyh8'
-                                },
-                                data: {
-                                    notification: {
-                                        title: 'Doreamon Dating',
-                                        body: userInfo.displayName + ' has added you to ' + h + ' talk.'
-                                    },
-                                    to: oneInfo.notificationToken,
-                                },
-                            };
-
-                            $http(req).
-                                then((response) => {
-                                    console.log(response);
-                                    resolve(response);
-                                }).
-                                catch((response) => {
-                                    console.log(response);
-                                    reject(response);
-                                });
-                        })
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    },
-};
