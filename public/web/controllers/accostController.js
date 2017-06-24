@@ -8,6 +8,7 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
         main : false,
         preloading : true,
     }
+    $scope.questions = [];
     // Parameter End
 
     // Function Start

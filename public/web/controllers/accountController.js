@@ -84,7 +84,6 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
         preloading : true,
     }
 
-    $scope.habit = [1,1,1,1,1];
     // Parameter End
 
     // Function Start

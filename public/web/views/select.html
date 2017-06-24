@@ -1,18 +1,118 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
-
-<div class="row" ng-repeat="(key,account) in accounts" ng-show="show.main">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-image">
-                <img ng-src="{{account.photoURL}}">
+<div ng-show="show.main">
+    <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#t1">Question</a></li>
+        <li class="tab col s3"><a href="#t2">Select</a></li>
+    </ul>
+    <div id="t1" class="col s12">
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                    <p>1. About how long do you want your next friendship to last?</p>
+                    </div>
+                    <div class="card-action">
+                        <select ng-model="questions[0]" class="browser-default" >
+                            <option value="One night" selected>One night</option>
+                            <option value="A few months to a year">A few months to a year</option>
+                            <option value="Several years">Several years</option>
+                            <option value="The rest of my life">The rest of my life</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="card-content center">
-                <span class="card-title">{{account.displayName}}({{account.age}})</span>
-                <a class="waves-effect waves-light btn full-width" ng-click="choose(key)">Add Talk</a>
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                    <p>2. Do you smoke?</p>
+                    </div>
+                    <div class="card-action">
+                        <select ng-model="questions[1]" class="browser-default" >
+                            <option value="Yes" selected>Yes</option>
+                            <option value="No" selected>No</option>
+                            <option value="Rarely" selected>Rarely</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                    <p>3. Are you currently employed?</p>
+                    </div>
+                    <div class="card-action">
+                        <select ng-model="questions[2]" class="browser-default" >
+                            <option value="Yes, I have full time job" selected>Yes, I have full time job</option>
+                            <option value="No">No</option>
+                            <option value="I have a part time job">I have a part time job</option>
+                            <option value="I'm a student">I'm a student</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                    <p>4. How frequently do you drink alcohol?</p>
+                    </div>
+                    <div class="card-action">
+                        <select ng-model="questions[3]" class="browser-default" >
+                            <option value="Often" selected>Often</option>
+                            <option value="Sometimes">Sometimes</option>
+                            <option value="Rarely">Rarely</option>
+                            <option value="Never">Never</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                    <p>5. Which event sounds most appealing?</p>
+                    </div>
+                    <div class="card-action">
+                        <select ng-model="questions[4]" class="browser-default" >
+                            <option value="Sci-Fi Convention" selected>Sci-Fi Convention</option>
+                            <option value="Political Convention">Political Convention</option>
+                            <option value="Musci Festival">Musci Festival</option>
+                            <option value="New Years Eve in Time Square">New Years Eve in Time Square</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light z-depth-1 full-width" type="submit" name="action" ng-click="updateHabit()">
+                Submit
+            </button>
+        </div>
+    </div>
+    <div id="t2" class="col s12">
+        <div class="row" ng-repeat="(key,account) in accounts" ng-show="show.select">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-image">
+                        <img ng-src="{{account.photoURL}}">
+                    </div>
+                    <div class="card-content center">
+                        <span class="card-title">{{account.displayName}}({{account.age}})</span>
+                        <a class="waves-effect waves-light btn full-width" ng-click="choose(key)">Add Talk</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-hide="show.select">
+            please answer question
         </div>
     </div>
 </div>
+
+
 <div class="children" ng-show="show.preloading">
     <span class="heartbeat-loader">Loading&#8230;</span>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('select').material_select();
+        $('ul.tabs').tabs();
+    });
+</script>
