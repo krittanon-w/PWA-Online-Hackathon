@@ -308,33 +308,30 @@ const messaging = {
                 });
         });
     },
-    getMessages(uid) {
+    getMessages(uid, onMessage) {
         console.log("messaging.getMessages: called");
-        return new Promise((resolve, reject) => {
-            auth.getUserInfo().
-                then((userInfo) => {
-                    firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
-                        then((snapshots) => {
-                            // console.log('snapshots: ', snapshots.val());
-                            var roomId = snapshots.val();
+        auth.getUserInfo().
+            then((userInfo) => {
+                firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
+                    then((snapshots) => {
+                        // console.log('snapshots: ', snapshots.val());
+                        var roomId = snapshots.val();
 
-                            firebase.database().ref('messages/' + roomId).once('value').
-                                then((snapshots) => {
-                                    // console.log('snapshots: ', snapshots.val());
-                                    resolve(snapshots.val());
-                                }).
-                                catch((error) => {
-                                    reject(error);
-                                });
-                        }).
-                        catch((error) => {
-                            reject(error);
-                        });
-                }).
-                catch((error) => {
-                    reject(error);
-                });
-        });
+                        firebase.database().ref('messages/' + roomId).
+                            on('child_added', function(snapshot) {
+                                // console.log('new message: ', snapshot.val());
+
+                                if (onMessage)
+                                    onMessage(snapshot.val());
+                            });
+                    }).
+                    catch((error) => {
+                        reject(error);
+                    });
+            }).
+            catch((error) => {
+                reject(error);
+            });
     },
     addMessage(uid, msg) {
         console.log("messaging.addMessage: called");
