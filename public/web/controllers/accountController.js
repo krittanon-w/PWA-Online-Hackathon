@@ -80,6 +80,8 @@ myApp.controller('ProfileController', function($scope, $location, urlService, us
         email: '',
         photoURL: '', 
     }
+
+    $scope.habit = [1,1,1,1,1];
     // Parameter End
 
     // Function Start
@@ -111,6 +113,10 @@ myApp.controller('ProfileController', function($scope, $location, urlService, us
         }).catch(function(reject){
             console.log(reject);
         });
+    };
+
+    $scope.updateHabit = function(){
+        console.log($scope.habit);
     };
     // Function End
 
