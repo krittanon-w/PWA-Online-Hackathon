@@ -317,12 +317,12 @@ const messaging = {
                         // console.log('snapshots: ', snapshots.val());
                         var roomId = snapshots.val();
 
-                        firebase.database().ref('messages/' + roomId).
+                        var subObj = firebase.database().ref('messages/' + roomId).
                             on('child_added', function(snapshot) {
                                 // console.log('new message: ', snapshot.val());
 
                                 if (onMessage)
-                                    onMessage(snapshot.val());
+                                    onMessage(snapshot.val(), subObj);
                             });
                     }).
                     catch((error) => {
