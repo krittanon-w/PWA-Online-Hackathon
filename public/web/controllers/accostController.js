@@ -20,6 +20,7 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
                     if(resolve.type != undefined){
                         matchingService.getUsers(resolve.type).then(function(resolve){
                             $scope.accounts = resolve;
+                            console.log("account",resolve);
                             $scope.show.select = true;
                             $scope.show.preloading = false;
                             $scope.show.main = true;
