@@ -1,0 +1,29 @@
+<header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
+<div class="container mar-top">
+    <ul class="chat" >
+        <li ng-repeat="message in messages">
+            <!--<div class="chip red lighten-3">
+                {{message.name}}
+            </div>
+            <div class="chip">
+                {{message.value}}
+            </div>-->
+            <div class="card blue-grey red lighten-3">
+                <div class="card-content white-text">
+                <span class="card-title">{{message.name}}</span>
+                <p>{{message.value}}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class=" blue-grey darken-1 white-text chatbox">
+    <div class="row">
+        <div class="col s10">
+            <input  type="text" ng-model="text">
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn down z-depth-1" ng-click="send()">Send</button>
+        </div>
+    </div>
+</div>
