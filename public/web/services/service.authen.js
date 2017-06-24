@@ -138,6 +138,26 @@ const user = {
                 });
         });
     },
+    updateType(type) {
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo()
+                .then((userInfo) => {
+                    var updates = {};
+                    updates[userInfo.uid + '/type'] = type;
+
+                    firebase.database().ref('users/').update(updates)
+                        .then((result) => {
+                            resolve(result);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    },
 };
 
 
