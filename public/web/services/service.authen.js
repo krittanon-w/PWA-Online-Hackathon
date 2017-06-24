@@ -165,8 +165,7 @@ const dtree = {
                 .then((tData) => {
                     var config = {
                         trainingSet: tData,
-                        categoryAttr: 'sex',
-                        ignoredAttributes: ['person']
+                        categoryAttr: 'type',
                     }
 
                     var decisionTree = new dt.DecisionTree(config)
