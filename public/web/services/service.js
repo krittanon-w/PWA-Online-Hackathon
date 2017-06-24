@@ -6,7 +6,6 @@ myApp.service('userService', userService);
 myApp.service('matchingService', matchingService);
 myApp.service('dtreeService', dtreeService);
 myApp.service('messageService', messageService);
-myApp.service('notificationService', notificationService);
 
 function accountService($firebaseAuth) {
     return auth;
@@ -34,8 +33,4 @@ function dtreeService() {
 
 function messageService() {
     return messaging;
-}
-
-function notificationService($http) {
-    return noti;
 }

@@ -266,40 +266,32 @@ const matching = {
 const noti = {
     notifyAddTalk($http, uid) {
         return new Promise((resolve, reject) => {
-            auth.getUserInfo()
-                .then((userInfo) => {
-                    user.getInfo(uid).
-                        then((oneInfo) => {
-                            var h = userInfo.gender === 'male' ? 'his' : 'her';
-                            var req = {
-                                method: 'POST',
-                                url: 'https://fcm.googleapis.com/fcm/send',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': 'key=AIzaSyAUNqwxh248KWyNpaeU7WD8uIsb6kENyh8'
-                                },
-                                data: {
-                                    notification: {
-                                        title: 'Doreamon Dating',
-                                        body: userInfo.displayName + ' has added you to ' + h + ' talk.'
-                                    },
-                                    to: oneInfo.notificationToken,
-                                },
-                            };
+            user.getInfo(uid).
+                then((userInfo) => {
+                    var req = {
+                        method: 'POST',
+                        url: 'https://fcm.googleapis.com/fcm/send',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'key=AIzaSyAUNqwxh248KWyNpaeU7WD8uIsb6kENyh8'
+                        },
+                        data: {
+                            notification: {
+                                title: 'Doreamon Dating',
+                                body: 'Somebody has added you to his/her talk.'
+                            },
 
-                            $http(req).
-                                then((response) => {
-                                    console.log(response);
-                                    resolve(response);
-                                }).
-                                catch((response) => {
-                                    console.log(response);
-                                    reject(response);
-                                });
-                        })
-                })
-                .catch((error) => {
-                    reject(error);
+                            to: userInfo.notificationToken,
+                        },
+                    };
+
+                    $http(req).
+                        then((response) => {
+                            resolve(response);
+                        }).
+                        catch((response) => {
+                            reject(response);
+                        });
                 });
         });
     },
@@ -320,8 +312,13 @@ const messaging = {
 
                     firebase.database().ref('users').update(updates).
                         then((result) => {
-                            noti.notifyAddTalk($http, uid);
-                            resolve(result);
+                            noti.notifyAddTalk($http, uid).
+                                then((response) => {
+                                    resolve(response);
+                                }).
+                                catch((error) => {
+                                    reject(error);
+                                });
                         }).
                         catch((error) => {
                             reject(error);
