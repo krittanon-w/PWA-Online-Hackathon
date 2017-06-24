@@ -7,13 +7,21 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }).when('/profile', {
         templateUrl: './web/views/profile.html',
         controller: 'ProfileController',
+        resolve: {
+          function(permission){
+             permission.check();
+          },
+        },
     }).when('/map', {
         templateUrl: './web/views/map.html',
         controller: 'MapController',
+        resolve: {
+          function(permission){
+             permission.check();
+          },
+        },
     })
 }]);
-
-
 
 app.run(function () {
     if ('serviceWorker' in navigator) {
@@ -35,6 +43,19 @@ app.run(function () {
         messagingSenderId: "640169615174"
     };
     firebase.initializeApp(config);
+});
+
+app.factory('permission', function ($location) {
+    return {
+        check: function () {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                } else {
+                    $location.path('/');
+                }
+            });
+        }
+    };
 });
 
 

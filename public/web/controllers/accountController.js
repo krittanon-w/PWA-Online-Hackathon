@@ -1,7 +1,7 @@
 var myApp = angular.module("app.account", []);
 
 
-myApp.controller('LoginController', function($scope, $location, accountService, urlService, userService) {
+myApp.controller('LoginController', function($scope, $location, $rootScope, accountService, urlService, userService) {
     // Parameter Start
     // Parameter End
 
@@ -24,7 +24,9 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
         accountService.login().then(function(){
             if(accountService.getUser() != null){
                 userService.updateInfo().then(function(){
-                    window.location.href = urlService.server()+"/profile";
+                    $rootScope.$apply(function() {
+                        $location.path("/profile");
+                    });
                 })
             }
         })
@@ -56,7 +58,6 @@ myApp.controller('ProfileController', function($scope, userService, accountServi
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                userService.getInfo(accountService.getUserInfo().uid).then(function(result){
-                   console.log(result.firstName);
                    $scope.form = result;
                    $scope.$apply();
                })
