@@ -269,8 +269,10 @@ const messaging = {
             auth.getUserInfo().
                 then((userInfo) => {
                     var updates = {};
-                    updates[uid] = newRoomId;
-                    firebase.database().ref('users/' + userInfo.uid + '/messages' ).update(updates).
+                    updates[userInfo.uid + '/messages/' + uid] = newRoomId;
+                    updates[uid + '/messages/' + userInfo.uid] = newRoomId;
+
+                    firebase.database().ref('users').update(updates).
                         then((result) => {
                             resolve(result);
                         }).
