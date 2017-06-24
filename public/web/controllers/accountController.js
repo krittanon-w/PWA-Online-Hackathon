@@ -19,6 +19,15 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
         .catch(function(err){
             console.log(err);
         }); 
+
+        accountService.getUserInfo().then(function(resolve){
+            console.log("resolve", resolve);
+            if(resolve != null){
+                window.location.href = urlService.server()+"/profile";
+            }
+        }).catch(function(reject){
+            console.log(reject);
+        })
     };
 
     $scope.login = function(){
@@ -29,7 +38,7 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
                     userService.updateInfo().then(function(){
                         $rootScope.$apply(function() {
                             $('#preloading').css("display", "none");
-                            $location.path("/profile");
+                            window.location.href = urlService.server()+"/profile";
                         });
                     }).catch(function(reject){
                         console.log(reject);
