@@ -326,11 +326,11 @@ const messaging = {
                             });
                     }).
                     catch((error) => {
-                        reject(error);
+                        console.log(error);
                     });
             }).
             catch((error) => {
-                reject(error);
+                console.log(error);
             });
     },
     addMessage(uid, msg) {
