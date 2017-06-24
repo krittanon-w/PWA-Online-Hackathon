@@ -290,6 +290,7 @@ const messaging = {
                 then((userInfo) => {
                     firebase.database().ref('users/' + userInfo.uid + '/messages' ).once('value').
                         then((snapshots) => {
+                            // console.log('snapshots: ', snapshots.val());
                             resolve(snapshots.val());
                         }).
                         catch((error) => {
