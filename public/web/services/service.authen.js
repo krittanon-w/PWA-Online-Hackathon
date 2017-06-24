@@ -308,34 +308,58 @@ const messaging = {
                 });
         });
     },
-    getMessages(roomId) {
+    getMessages(uid) {
         console.log("messaging.getMessages: called");
         return new Promise((resolve, reject) => {
-            firebase.database().ref('messages/' + roomId).once('value').
-                then((snapshots) => {
-                    // console.log('snapshots: ', snapshots.val());
-                    resolve(snapshots.val());
+            auth.getUserInfo().
+                then((userInfo) => {
+                    firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
+                        then((snapshots) => {
+                            // console.log('snapshots: ', snapshots.val());
+                            var roomId = snapshots.val();
+
+                            firebase.database().ref('messages/' + roomId).once('value').
+                                then((snapshots) => {
+                                    // console.log('snapshots: ', snapshots.val());
+                                    resolve(snapshots.val());
+                                }).
+                                catch((error) => {
+                                    reject(error);
+                                });
+                        }).
+                        catch((error) => {
+                            reject(error);
+                        });
                 }).
                 catch((error) => {
                     reject(error);
                 });
         });
     },
-    addMessage(roomId, msg) {
+    addMessage(uid, msg) {
         console.log("messaging.addMessage: called");
         return new Promise((resolve, reject) => {
             auth.getUserInfo().
                 then((userInfo) => {
-                    var newMessage = {};
-                    newMessage[userInfo.displayName] = msg;
+                    firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
+                        then((snapshots) => {
+                            // console.log('snapshots: ', snapshots.val());
 
-                    firebase.database().ref('messages/' + roomId).push(newMessage)
-                        .then((result) => {
-                            resolve(result)
-                        })
-                        .catch((error) => {
-                            reject(error)
-                        })
+                            var roomId = snapshots.val();
+                            var newMessage = {};
+                            newMessage[userInfo.displayName] = msg;
+
+                            firebase.database().ref('messages/' + roomId).push(newMessage)
+                                .then((result) => {
+                                    resolve(result)
+                                })
+                                .catch((error) => {
+                                    reject(error)
+                                });
+                        }).
+                        catch((error) => {
+                            reject(error);
+                        });
                 }).
                 catch((error) => {
                     reject(error);
@@ -349,7 +373,7 @@ const messaging = {
                 then((userInfo) => {
                     firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
                         then((snapshots) => {
-                            console.log('snapshots: ', snapshots.val());
+                            // console.log('snapshots: ', snapshots.val());
 
                             var roomId = snapshots.val();
                             var updates = {};
