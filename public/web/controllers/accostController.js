@@ -159,16 +159,33 @@ myApp.controller('ListController', function($scope, $location, urlService, messa
     $scope.init();
 });
 
-myApp.controller('ChatController', function($scope, $location, chatFactory) {
+myApp.controller('ChatController', function($scope, $location, chatFactory, messageService) {
     // Parameter Start
     var uid = 0;
+    $scope.messages = [];
+    $scope.text = "";
     // Parameter End
 
     // Function Start
     $scope.init = function() {
         uid = chatFactory.getUid();
         console.log(uid);
+         messageService.getMessages(uid,function(message, subObj){
+             console.log(message);
+            $scope.messages.push({name: Object.keys(message)[0], value: Object.values(message)[0]});
+            $scope.$apply();
+        })
     };
+
+    $scope.send = function(){
+        if($scope.text != ""){
+            messageService.addMessage(uid,$scope.text).then(function(){
+            }).catch(function(){
+            })
+        }
+    }
+ 
+
     // Function End
     
     // Directive Start

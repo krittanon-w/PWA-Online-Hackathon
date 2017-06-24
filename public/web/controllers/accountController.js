@@ -14,9 +14,9 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
         })
     };
 
-    $scope.login = function(){
+    $scope.login = function(provider){
         $('#preloading').css("display", "block");
-        accountService.login().then(function(){
+        accountService.login(provider).then(function(){
             accountService.getUser().then(function(resolve){
                 if(resolve != null){
                     userService.updateInfo().then(function(){
