@@ -249,8 +249,8 @@ const matching = {
             firebase.database().ref('users').orderByChild('type').equalTo(type).
                 once('value').
                 then((snapshots) => {
-                    console.log("snapshots: ", snapshots.val())
-                    resolve(snapshots);
+                    // console.log("snapshots: ", snapshots.val())
+                    resolve(snapshots.val());
                 }).
                 catch((error) => {
                     reject(error);
