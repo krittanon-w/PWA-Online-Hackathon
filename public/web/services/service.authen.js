@@ -342,4 +342,36 @@ const messaging = {
                 });
         });
     },
+    removeTalk(uid) {
+        console.log("messaging.removeTalk: called");
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo().
+                then((userInfo) => {
+                    firebase.database().ref('users/' + userInfo.uid + '/messages/' + uid).once('value').
+                        then((snapshots) => {
+                            console.log('snapshots: ', snapshots.val());
+
+                            var roomId = snapshots.val();
+                            var updates = {};
+                            updates['users/' + userInfo.uid + '/messages/' + uid] = null;
+                            updates['users/' + uid + '/messages/' + userInfo.uid] = null;
+                            updates['messages/' + roomId] = null;
+
+                            firebase.database().ref().update(updates).
+                                then((result) => {
+                                    resolve(result);
+                                }).
+                                catch((error) => {
+                                    reject(error);
+                                });
+                        }).
+                        catch((error) => {
+                            reject(error);
+                        });
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
+    },
 };
