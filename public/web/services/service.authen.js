@@ -20,31 +20,50 @@ const auth = {
             })
     },
     getUser() {
-        try {
-            console.log('getUser: called')
-            var user = firebase.auth().currentUser
-            console.log('getUser: success', user)
-            return user
-        } catch (error) {
-            console.log('getUser: failed')
-            return error
-        }
+        console.log('getUser: called')
+        return new Promise((resolve, reject) => {
+            this.onAuthStageChange()
+                .then((user) => {
+                    console.log('getUser: success', user)
+                    resolve(user)
+                })
+                .catch((error) => {
+                    console.log('getUser: failed')
+                    reject(error)
+                })
+        })
     },
     getUserInfo() {
-        try {
-            console.log('getUserInfo: called')
-            var userInfo = null
-            var user = this.getUser()
-            if (user != null) userInfo = user.providerData[0]
-            console.log('getUserInfo: success', userInfo)
-            return userInfo
-        } catch (error) {
-            console.log('getUserInfo: failed')
-            return error
-        }
+        console.log('getUserInfo: called')
+        return new Promise((resolve, reject) => {
+            this.getUser()
+            .then((user)=>{
+                var info = (user == null ? null : user.providerData[0])
+                console.log('getUserInfo: success', info)
+                resolve(info)
+            })
+            .catch((error)=>{
+                console.log('getUserInfo: failed')
+                reject(error)
+            })
+        })
     },
-    onStageChange() {
-        // jest def
+    onAuthStageChange() {
+        console.log("onStageChange: called")
+        return new Promise((resolve, reject) => {
+            var listenEvent = firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    console.log("onStageChange: user signed")
+                    resolve(user)
+                    listenEvent()
+                } else {
+                    console.log("onStageChange: no user signin")
+                    // reject(Error("no user signin"))
+                    resolve(null)
+                    listenEvent()
+                }
+            })
+        })
     }
 };
 
