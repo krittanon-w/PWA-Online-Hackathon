@@ -244,19 +244,18 @@ const dtree = {
 const matching = {
     getUsers(type) {
         console.log("matching.getUsers: called")
-        return new Promise((resolve, reject) => [
-            firebase.database().ref('users').once('value')
-            .then((snapshots) => {
-                var users = []
-                snapshots.forEach((snapshot) => {
-                    var row = snapshot.val();
-                    if (type == row.type) users.push(row)
-                })
-                resolve(users)
-            }).catch((error) => {
-                reject(error)
-            })
-        ])
+        return new Promise((resolve, reject) => {
+            var users = [];
+            firebase.database().ref('users').orderByChild('type').equalTo(type).
+                once('value').
+                then((snapshots) => {
+                    console.log("snapshots: ", snapshots.val())
+                    resolve(snapshots);
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
     },
 };
 
@@ -276,7 +275,25 @@ const messaging = {
                             resolve(result);
                         }).
                         catch((error) => {
-                            reject(result);
+                            reject(error);
+                        });
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
+    },
+    getPartners() {
+        console.log("messaging.getPartners: called");
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo().
+                then((userInfo) => {
+                    firebase.database().ref('users/' + userInfo.uid + '/messages' ).once('value').
+                        then((snapshots) => {
+                            resolve(snapshots.val());
+                        }).
+                        catch((error) => {
+                            reject(error);
                         });
                 }).
                 catch((error) => {
