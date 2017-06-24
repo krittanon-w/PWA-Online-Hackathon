@@ -4,13 +4,18 @@ var myApp = angular.module("app.accost", []);
 myApp.controller('SelectController', function($scope, $location, urlService, matchingService) {
     // Parameter Start
     $scope.accounts = "";
+    $scope.show = {
+        main : false,
+        preloading : true,
+    }
     // Parameter End
 
     // Function Start
     $scope.init = function() {
         matchingService.getUsers().then(function(resolve){
-            console.log(resolve);
             $scope.accounts = resolve;
+            $scope.show.preloading = false;
+            $scope.show.main = true;
             $scope.$apply();
         }).catch(function(reject){
 

@@ -1,6 +1,6 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
 
-<div class="row" ng-repeat="(key,account) in accounts">
+<div class="row" ng-repeat="(key,account) in accounts" ng-show="show.main">
     <div class="col s12">
         <div class="card">
             <div class="card-image">
@@ -12,4 +12,7 @@
             </div>
         </div>
     </div>
+</div>
+<div class="children" ng-show="show.preloading">
+    <span class="heartbeat-loader">Loading&#8230;</span>
 </div>

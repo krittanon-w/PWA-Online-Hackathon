@@ -17,6 +17,8 @@ var fileName = ['/',
         '/web/diractive/header.js',
         '/web/views/login.html',
         '/web/views/profile.html',
+        '/web/views/list.html',
+        '/web/views/select.html',
         '/web/views/layout/header.html', ];
         
 self.addEventListener('install',function(event){

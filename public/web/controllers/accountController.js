@@ -21,7 +21,6 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
         }); 
 
         accountService.getUserInfo().then(function(resolve){
-            console.log("resolve", resolve);
             if(resolve != null){
                 window.location.href = urlService.server()+"/profile";
             }
@@ -31,15 +30,14 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
     };
 
     $scope.login = function(){
+
         $('#preloading').css("display", "block");
         accountService.login().then(function(){
             accountService.getUser().then(function(resolve){
                 if(resolve != null){
                     userService.updateInfo().then(function(){
-                        $rootScope.$apply(function() {
-                            $('#preloading').css("display", "none");
-                            window.location.href = urlService.server()+"/profile";
-                        });
+                        $('#preloading').css("display", "none");
+                        window.location.href = urlService.server()+"/profile";
                     }).catch(function(reject){
                         console.log(reject);
                         $('#preloading').css("display", "none");
@@ -69,7 +67,7 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
 });
 
 
-myApp.controller('ProfileController', function($scope, $location, urlService, userService, accountService) {
+myApp.controller('ProfileController', function($scope, $location, urlService, authFactory, userService, accountService) {
     // Parameter Start
     $scope.form = {
         displayName: '',
@@ -80,31 +78,54 @@ myApp.controller('ProfileController', function($scope, $location, urlService, us
         email: '',
         photoURL: '', 
     }
+    
+    $scope.show = {
+        main : false,
+        preloading : true,
+    }
 
     $scope.habit = [1,1,1,1,1];
     // Parameter End
 
     // Function Start
     $scope.init = function(){
-        $('#preloading').css("display", "block");
-        accountService.getUserInfo().then(function(resolve){
-            console.log("resolve", resolve);
-            if(resolve != null){
-                userService.getInfo(resolve.uid).then(function(resolve){
-                    $scope.form = resolve;
+        if(navigator.onLine){
+            accountService.getUserInfo().then(function(resolve){
+                console.log("resolve", resolve);
+                if(resolve != null){
+                    userService.getInfo(resolve.uid).then(function(resolve){
+                        authFactory.setAuthObject(resolve);
+                        $scope.form = resolve;
+                        $scope.show.preloading = false;
+                        $scope.show.main = true;
+                        $scope.$apply();
+                    }).catch(function(reject){
+                        $scope.show.preloading = false;
+                        $scope.show.main = true;
+                        $scope.$apply();
+                        console.log(reject);
+                    })
+                } else {
+                    $scope.show.preloading = false;
+                    $scope.show.main = true;
                     $scope.$apply();
-                    $('#preloading').css("display", "none");
-                }).catch(function(reject){
-                    $('#preloading').css("display", "none");
-                    console.log(reject);
-                })
-            } else {
-                $('#preloading').css("display", "none");
+                }
+            }).catch(function(reject){
+                $scope.show.preloading = false;
+                $scope.show.main = true;
+                $scope.$apply();
+                console.log(reject);
+            })
+        }else{
+            var authObject = authFactory.getetAuthObject();
+            console.log(authObject);
+            if(authObject != null && authObject != ""){
+                $scope.form = authObject;
+                $scope.show.preloading = false;
+                $scope.show.main = true;
             }
-        }).catch(function(reject){
-            $('#preloading').css("display", "none");
-            console.log(reject);
-        })
+        }
+        
     };
 
     $scope.update = function(){
