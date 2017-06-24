@@ -258,4 +258,30 @@ const matching = {
             })
         ])
     },
-}
+};
+
+const messaging = {
+    addTalk(uid) {
+        console.log("messaging.addTalk: called");
+        return new Promise((resolve, reject) => {
+            var initMessage = {"00": {DoreamonSystem: "You've just created this chat room."}};
+            var newRoomId = firebase.database().ref('messages').push(initMessage).key;
+
+            auth.getUserInfo().
+                then((userInfo) => {
+                    var updates = {};
+                    updates[uid] = newRoomId;
+                    firebase.database().ref('users/' + userInfo.uid + '/messages' ).update(updates).
+                        then((result) => {
+                            resolve(result);
+                        }).
+                        catch((error) => {
+                            reject(result);
+                        });
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
+    },
+};
