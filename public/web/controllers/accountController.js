@@ -1,7 +1,7 @@
 var myApp = angular.module("app.account", []);
 
 
-myApp.controller('LoginController', function($scope, $location, accountService, urlService) {
+myApp.controller('LoginController', function($scope, $location, accountService, urlService, userService) {
     // Parameter Start
     // Parameter End
 
@@ -23,7 +23,11 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
     $scope.login = function(){
         accountService.login().then(function(){
             if(accountService.getUser() != null){
-                window.location.href = urlService.server()+"/profile";
+                console.log('get');
+                userService.updateInfo().then(function(){
+                    console.log('up');
+                    window.location.href = urlService.server()+"/profile";
+                })
             }
         })
     }
@@ -35,7 +39,7 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
 });
 
 
-myApp.controller('ProfileController', function($scope, userService) {
+myApp.controller('ProfileController', function($scope, userService, accountService) {
     // Parameter Start
     $scope.form = {
         displayName: 'sss',
