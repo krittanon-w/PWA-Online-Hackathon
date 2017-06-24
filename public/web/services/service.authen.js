@@ -37,15 +37,15 @@ const auth = {
         console.log('getUserInfo: called')
         return new Promise((resolve, reject) => {
             this.getUser()
-            .then((user)=>{
-                var info = (user == null ? null : user.providerData[0])
-                console.log('getUserInfo: success', info)
-                resolve(info)
-            })
-            .catch((error)=>{
-                console.log('getUserInfo: failed')
-                reject(error)
-            })
+                .then((user) => {
+                    var info = (user == null ? null : user.providerData[0])
+                    console.log('getUserInfo: success', info)
+                    resolve(info)
+                })
+                .catch((error) => {
+                    console.log('getUserInfo: failed')
+                    reject(error)
+                })
         })
     },
     onAuthStageChange() {
@@ -89,15 +89,15 @@ const user = {
                             reject(error);
                         });
                 }).
-                catch((error) => {
-                    reject(error);
-                });
+            catch((error) => {
+                reject(error);
+            });
         });
     },
     getUsers() {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             firebase.database().ref('users').once('value')
-                .then(function(snapshot) {
+                .then(function (snapshot) {
                     console.log('Snapshot value: ', snapshot.val());
                     return resolve(snapshot.val());
                 }).catch((error) => {
@@ -106,9 +106,9 @@ const user = {
         });
     },
     getInfo(uid) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             firebase.database().ref('users/' + uid).once('value')
-                .then(function(snapshot) {
+                .then(function (snapshot) {
                     console.log('Snapshot value: ', snapshot.val());
                     return resolve(snapshot.val());
                 }).catch((error) => {
@@ -139,3 +139,18 @@ const user = {
         });
     },
 };
+
+const matching = {
+    getUsers() {
+        console.log("matching.getUsers: called")
+        return new Promise((resolve, reject) => [
+            user.getUsers()
+            .then((users) => {
+                resolve(users)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        ])
+    },
+}

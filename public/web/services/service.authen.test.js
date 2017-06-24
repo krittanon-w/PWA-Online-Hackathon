@@ -1,9 +1,10 @@
-function test_login() {
-    auth.login()
-        .then(() => {
-            console.log('test login success')
+$(document).ready(function () {
+
+    matching.getUsers()
+        .then((users) => {
+            console.log(users)
         })
-        .catch(() => {
-            console.log('test login error')
+        .catch((error) => {
+            console.log(error)
         })
-}
+});
