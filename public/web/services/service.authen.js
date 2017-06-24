@@ -69,17 +69,30 @@ const auth = {
 
 const user = {
     setInfo(inputInfo) {
-        var userInfo = auth.getUserInfo();
-        var userTmp = {
-            displayName: userInfo.displayName,
-            photoURL: userInfo.photoURL,
-            email: userInfo.email,
-            firstName: inputInfo.firstName,
-            lastName: inputInfo.lastName,
-            age: inputInfo.age,
-            gender: inputInfo.gender,
-        };
-        return firebase.database().ref('users/' + userInfo.uid).set(userTmp);
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo()
+                .then((userInfo) => {
+                    var userTmp = {
+                        displayName: userInfo.displayName,
+                        photoURL: userInfo.photoURL,
+                        email: userInfo.email,
+                        firstName: inputInfo.firstName,
+                        lastName: inputInfo.lastName,
+                        age: inputInfo.age,
+                        gender: inputInfo.gender,
+                    };
+                    firebase.database().ref('users/' + userInfo.uid).set(userTmp)
+                        .then((result) => {
+                            resolve(result);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
     },
     getInfo(uid) {
         return new Promise(function(result, reject) {
@@ -93,12 +106,25 @@ const user = {
         });
     },
     updateInfo() {
-        var userInfo = auth.getUserInfo();
-        var updates = {};
-        updates['/users/' + userInfo.uid + '/displayName'] = userInfo.displayName;
-        updates['/users/' + userInfo.uid + '/photoURL'] = userInfo.photoURL;
-        updates['/users/' + userInfo.uid + '/email'] = userInfo.email;
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo()
+                .then((userInfo) => {
+                    var updates = {};
+                    updates[userInfo.uid + '/displayName'] = userInfo.displayName;
+                    updates[userInfo.uid + '/photoURL'] = userInfo.photoURL;
+                    updates[userInfo.uid + '/email'] = userInfo.email;
 
-        return firebase.database().ref().update(updates);
+                    firebase.database().ref('users/').update(updates)
+                        .then((result) => {
+                            resolve(result);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     },
 };
