@@ -21,10 +21,12 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
     };
 
     $scope.login = function(){
+        $('#preloading').css("display", "block");
         accountService.login().then(function(){
             if(accountService.getUser() != null){
                 userService.updateInfo().then(function(){
                     $rootScope.$apply(function() {
+                        $('#preloading').css("display", "none");
                         $location.path("/profile");
                     });
                 })
@@ -54,12 +56,13 @@ myApp.controller('ProfileController', function($scope, userService, accountServi
 
     // Function Start
     $scope.init = function(){
-        $scope.form.gender = 'male';
+        $('#preloading').css("display", "block");
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                userService.getInfo(accountService.getUserInfo().uid).then(function(result){
                    $scope.form = result;
                    $scope.$apply();
+                   $('#preloading').css("display", "none");
                })
             }
         });
