@@ -321,4 +321,25 @@ const messaging = {
                 });
         });
     },
+    addMessage(roomId, msg) {
+        console.log("messaging.addMessage: called");
+        return new Promise((resolve, reject) => {
+            auth.getUserInfo().
+                then((userInfo) => {
+                    var newMessage = {};
+                    newMessage[userInfo.displayName] = msg;
+
+                    firebase.database().ref('messages/' + roomId).push(newMessage)
+                        .then((result) => {
+                            resolve(result)
+                        })
+                        .catch((error) => {
+                            reject(error)
+                        })
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
+    },
 };
