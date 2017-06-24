@@ -18,7 +18,7 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
             if(resolve != null){
                 userService.getInfo(resolve.uid).then(function(resolve){
                     if(resolve.type != undefined){
-                        matchingService.getUsers().then(function(resolve){
+                        matchingService.getUsers(resolve.type).then(function(resolve){
                             $scope.accounts = resolve;
                             $scope.show.select = true;
                             $scope.show.preloading = false;
@@ -39,6 +39,9 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
     };
 
     $scope.submit = function(uid){
+        $scope.show.select = false;
+        $scope.show.preloading = true;
+        $scope.show.main = false;
         accountService.getUserInfo().then(function(resolve){
             if(resolve != null){
                 userService.getInfo(resolve.uid).then(function(resolve){
@@ -52,15 +55,40 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
                             q4: $scope.questions[3],
                             q5: $scope.questions[4],
                         };
-                        dtreeService.addTraningData(traningData).then(function(resolve){
-                            console.log(resolve);
+                        dtreeService.getPrediction(traningData).then(function(resolve){
+                            if(resolve.decission != null){
+                                userService.updateType(resolve.decission).then(function(resolve){
+                                    $scope.show.select = true;
+                                    $scope.show.preloading = false;
+                                    $scope.show.main = true;
+                                    $scope.init();
+                                    Materialize.toast('Finish now you can meet your favorite type', 4000);
+                                }).catch(function(reject){
+                                    $scope.show.select = true;
+                                    $scope.show.preloading = false;
+                                    $scope.show.main = true;
+                                    Materialize.toast('Cannot login err:06', 4000); 
+                                })
+                            }
                         }).catch(function(reject){
+                            $scope.show.select = true;
+                            $scope.show.preloading = false;
+                            $scope.show.main = true;
+                            Materialize.toast('Cannot login err:05', 4000); 
                         })
                     }
                 }).catch(function(reject){
+                    $scope.show.select = true;
+                    $scope.show.preloading = false;
+                    $scope.show.main = true;
+                    Materialize.toast('Cannot login err:04', 4000); 
                 });
             }
         }).catch(function(reject){
+            $scope.show.select = true;
+            $scope.show.preloading = false;
+            $scope.show.main = true;
+            Materialize.toast('Cannot login err:04', 4000); 
         })
     };
 

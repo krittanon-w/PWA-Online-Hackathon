@@ -8,29 +8,15 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
     // Function Start
     $scope.init = function() {
         $('#preloading').css("display", "none");
-        const messaging = firebase.messaging();
-        messaging.requestPermission()
-        .then(function(){
-            return messaging.getToken();
-        })
-        .then(function(token){
-            console.log(token);
-        })
-        .catch(function(err){
-            console.log(err);
-        }); 
-
         accountService.getUserInfo().then(function(resolve){
             if(resolve != null){
                 window.location.href = urlService.server()+"/profile";
             }
         }).catch(function(reject){
-            console.log(reject);
         })
     };
 
     $scope.login = function(){
-
         $('#preloading').css("display", "block");
         accountService.login().then(function(){
             accountService.getUser().then(function(resolve){
@@ -39,22 +25,18 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
                         $('#preloading').css("display", "none");
                         window.location.href = urlService.server()+"/profile";
                     }).catch(function(reject){
-                        console.log(reject);
                         $('#preloading').css("display", "none");
                         Materialize.toast('Cannot login err:03', 4000); 
                     })
                 } else {
-                    console.log(reject);
                     $('#preloading').css("display", "none");
                     Materialize.toast('Cannot login err:02', 4000); 
                 }
             }).catch(function(reject){
-                console.log(reject);
                 $('#preloading').css("display", "none");
                 Materialize.toast('Cannot login err:02', 4000); 
             })
         }).catch(function(reject){
-            console.log(reject);
             $('#preloading').css("display", "none");
             Materialize.toast('Cannot login err:01', 4000); 
         })
@@ -88,9 +70,29 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
 
     // Function Start
     $scope.init = function(){
+        const messaging = firebase.messaging();
+        messaging.requestPermission().then(function(){
+            messaging.getToken().then(function(currentToken) {
+                if (currentToken) {
+                    userService.updateNotificationToken(currentToken).then(function(resolve){
+                    }).catch(function(reject){
+                    })
+                } else {
+                    console.log('No Instance ID token available. Request permission to generate one.');
+                    setTokenSentToServer(false);
+                }
+            })
+            .catch(function(err) {
+                console.log('An error occurred while retrieving token. ', err);
+                showToken('Error retrieving Instance ID token. ', err);
+                setTokenSentToServer(false);
+            });
+        })
+        .catch(function(err){
+        }); 
+
         if(navigator.onLine){
             accountService.getUserInfo().then(function(resolve){
-                console.log("resolve", resolve);
                 if(resolve != null){
                     userService.getInfo(resolve.uid).then(function(resolve){
                         authFactory.setAuthObject(resolve);
@@ -102,7 +104,6 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
                         $scope.show.preloading = false;
                         $scope.show.main = true;
                         $scope.$apply();
-                        console.log(reject);
                     })
                 } else {
                     $scope.show.preloading = false;
@@ -113,11 +114,9 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
                 $scope.show.preloading = false;
                 $scope.show.main = true;
                 $scope.$apply();
-                console.log(reject);
             })
         }else{
             var authObject = authFactory.getetAuthObject();
-            console.log(authObject);
             if(authObject != null && authObject != ""){
                 $scope.form = authObject;
                 $scope.show.preloading = false;
@@ -131,10 +130,8 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
         userService.setInfo($scope.form).then(function(resolve){
             Materialize.toast('Update Success', 4000); 
         }).catch(function(reject){
-            console.log(reject);
         });
     };
-
     // Function End
 
     // Directive Start
