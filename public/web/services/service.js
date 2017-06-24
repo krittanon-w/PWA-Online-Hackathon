@@ -3,6 +3,7 @@ var myApp = angular.module("app.service", []);
 myApp.service('accountService', accountService);
 myApp.service('urlService', urlService);
 myApp.service('userService', userService);
+myApp.service('matchingService', matchingService);
 
 function accountService($firebaseAuth) {
     return auth;
@@ -19,3 +20,8 @@ function urlService($location) {
 function userService() {
     return user;
 }
+
+function matchingService() {
+    return matching;
+}
+
