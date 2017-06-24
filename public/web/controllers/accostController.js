@@ -1,13 +1,14 @@
 var myApp = angular.module("app.accost", []);
 
 
-myApp.controller('SelectController', function($scope, $location, urlService, matchingService, userService, accountService, dtreeService) {
+myApp.controller('SelectController', function($scope, $location, urlService, messageService, matchingService, userService, accountService, dtreeService) {
     // Parameter Start
     $scope.accounts = "";
     $scope.show = {
         main : false,
         preloading : true,
         select: false,
+        warn: true,
     }
     $scope.questions = [];
     // Parameter End
@@ -20,7 +21,6 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
                     if(resolve.type != undefined){
                         matchingService.getUsers(resolve.type).then(function(resolve){
                             $scope.accounts = resolve;
-                            console.log("account",resolve);
                             $scope.show.select = true;
                             $scope.show.preloading = false;
                             $scope.show.main = true;
@@ -28,6 +28,7 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
                         }).catch(function(reject){
                         });
                     } else {
+                        $scope.show.warn = true;
                         $scope.show.preloading = false;
                         $scope.show.main = true;
                         $scope.$apply();
@@ -93,8 +94,10 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
         })
     };
 
-    $scope.choose = function(uid){
-        console.log(uid);
+    $scope.addTalk = function(uid){
+        messageService.addTalk(uid).then(function(resolve){
+        }).catch(function(reject){
+        })
     };
     // Function End
 
@@ -109,45 +112,34 @@ myApp.controller('SelectController', function($scope, $location, urlService, mat
     $scope.init();
 });
 
-myApp.controller('ListController', function($scope, $location, urlService) {
+myApp.controller('ListController', function($scope, $location, $q, urlService, messageService, userService) {
     // Parameter Start
-     $scope.accounts = [{
-        displayName: 'son poo',
-        firstName: 'son',
-        lastName: 'poo',
-        Age: '25',
-        detail:'sdafweatgawg',
-        photoURL:'https://lh6.googleusercontent.com/-9QHVXyYdoWM/AAAAAAAAAAI/AAAAAAAAABE/PzTK6xALEcU/photo.jpg',
-        uid:'65464131',
-    },{
-        displayName: 'son poo',
-        firstName: 'son',
-        lastName: 'poo',
-        Age: '25',
-        detail:'sdafweatgawg',
-        photoURL:'https://lh6.googleusercontent.com/-9QHVXyYdoWM/AAAAAAAAAAI/AAAAAAAAABE/PzTK6xALEcU/photo.jpg',
-        uid:'65464131',
-    },{
-        displayName: 'son poo',
-        firstName: 'son',
-        lastName: 'poo',
-        Age: '25',
-        detail:'sdafweatgawg',
-        photoURL:'https://lh6.googleusercontent.com/-9QHVXyYdoWM/AAAAAAAAAAI/AAAAAAAAABE/PzTK6xALEcU/photo.jpg',
-        uid:'65464131',
-    },{
-        displayName: 'son poo',
-        firstName: 'son',
-        lastName: 'poo',
-        Age: '25',
-        detail:'sdafweatgawg',
-        photoURL:'https://lh6.googleusercontent.com/-9QHVXyYdoWM/AAAAAAAAAAI/AAAAAAAAABE/PzTK6xALEcU/photo.jpg',
-        uid:'65464131',
-    }];
+     $scope.accounts = [];
+     var promises = [];
+     $scope.show = {
+         main: false,
+         preloading: true,
+     }
     // Parameter End
 
     // Function Start
     $scope.init = function() {
+        messageService.getPartners().then(function(resolve){
+            angular.forEach(resolve, function(value, key) {
+                promises.push(userService.getInfo(key).then(function(resolve){
+                    var tmp ={uid: key, displayName: resolve.displayName, photoURL: resolve.photoURL};
+                    return tmp;
+                }).catch(function(reject){
+                }));
+            })
+            Promise.all(promises).then(function(result){
+                $scope.accounts = result;
+                $scope.show.main = true;
+                $scope.show.preloading = false;
+                $scope.$apply();
+            });
+        }).catch(function(reject){
+        })
     };
     // Function End
 
