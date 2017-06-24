@@ -28,6 +28,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
              permission.check();
           },
         },
+    }).when('/about', {
+        templateUrl: './web/views/about.html',
+        controller: 'AboutController',
+        resolve: {
+          function(permission){
+             permission.check();
+          },
+        },
     })
 }]);
 

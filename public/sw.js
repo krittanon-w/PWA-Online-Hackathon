@@ -19,6 +19,10 @@ var fileName = ['/',
         '/web/views/profile.html',
         '/web/views/list.html',
         '/web/views/select.html',
+        '/web/views/about.html',
+        '/web/resources/images/1.png',
+        '/web/resources/images/2.png',
+        '/web/resources/images/3.png',
         '/web/views/layout/header.html', ];
         
 self.addEventListener('install',function(event){

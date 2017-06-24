@@ -1,6 +1,4 @@
 var myApp = angular.module("app.account", []);
-
-
 myApp.controller('LoginController', function($scope, $location, $rootScope, accountService, urlService, userService) {
     // Parameter Start
     // Parameter End
@@ -143,4 +141,22 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
     };
     // Directive End
     $scope.init();
+});
+
+myApp.controller('AboutController', function($scope) {
+    // Parameter Start
+    // Parameter End
+
+    // Function Start
+    
+    // Function End
+
+    // Directive Start
+    $scope.header = {
+        delegates: {
+        },
+        configs: {
+        },
+    };
+    // Directive End
 });
