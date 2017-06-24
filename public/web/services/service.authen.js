@@ -308,4 +308,17 @@ const messaging = {
                 });
         });
     },
+    getMessages(roomId) {
+        console.log("messaging.getMessages: called");
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('messages/' + roomId).once('value').
+                then((snapshots) => {
+                    // console.log('snapshots: ', snapshots.val());
+                    resolve(snapshots.val());
+                }).
+                catch((error) => {
+                    reject(error);
+                });
+        });
+    },
 };
