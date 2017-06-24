@@ -72,16 +72,16 @@ const user = {
         return new Promise((resolve, reject) => {
             auth.getUserInfo()
                 .then((userInfo) => {
-                    var userTmp = {
-                        displayName: userInfo.displayName,
-                        photoURL: userInfo.photoURL,
-                        email: userInfo.email,
-                        firstName: inputInfo.firstName,
-                        lastName: inputInfo.lastName,
-                        age: inputInfo.age,
-                        gender: inputInfo.gender,
-                    };
-                    firebase.database().ref('users/' + userInfo.uid).set(userTmp)
+                    var updates = {};
+                    updates[userInfo.uid + '/displayName'] = userInfo.displayName;
+                    updates[userInfo.uid + '/photoURL'] = userInfo.photoURL;
+                    updates[userInfo.uid + '/email'] = userInfo.email;
+                    updates[userInfo.uid + '/firstName'] = inputInfo.firstName;
+                    updates[userInfo.uid + '/lastName'] = inputInfo.lastName;
+                    updates[userInfo.uid + '/age'] = inputInfo.age;
+                    updates[userInfo.uid + '/gender'] = inputInfo.gender;
+
+                    firebase.database().ref('users/').update(updates)
                         .then((result) => {
                             resolve(result);
                         })
