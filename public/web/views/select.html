@@ -1,8 +1,8 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
 <div ng-show="show.main">
     <ul class="tabs">
-        <li class="tab col s3"><a class="active" href="#t1">Question</a></li>
-        <li class="tab col s3"><a href="#t2">Select</a></li>
+        <li class="tab col s3"><a href="#t1">Question</a></li>
+        <li class="tab col s3"><a class="active" href="#t2">Select</a></li>
     </ul>
     <div id="t1" class="col s12">
         <div class="row">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn waves-effect waves-light z-depth-1 full-width" type="submit" name="action" ng-click="updateHabit()">
+            <button class="btn waves-effect waves-light z-depth-1 full-width" type="submit" name="action" ng-click="submit()">
                 Submit
             </button>
         </div>
@@ -99,8 +99,13 @@
                 </div>
             </div>
         </div>
-        <div ng-hide="show.select">
-            please answer question
+        <div class="container" ng-hide="show.select">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Please answer the questions first!!!</span>
+                    <p>Your answer will predict your favorite type</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

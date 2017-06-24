@@ -135,9 +135,6 @@ myApp.controller('ProfileController', function($scope, $location, urlService, au
         });
     };
 
-    $scope.updateHabit = function(){
-        console.log($scope.habit);
-    };
     // Function End
 
     // Directive Start
