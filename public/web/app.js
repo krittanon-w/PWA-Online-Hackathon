@@ -45,13 +45,14 @@ app.run(function () {
     firebase.initializeApp(config);
 });
 
-app.factory('permission', function ($location) {
+app.service('permission', function ($location, urlService) {
     return {
         check: function () {
             firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
+                if (user != null) {
                 } else {
-                    $location.path('/');
+                    //$location.path('/');
+                    window.location.href = urlService.server()+"/";
                 }
             });
         }

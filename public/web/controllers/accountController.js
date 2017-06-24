@@ -7,6 +7,7 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
 
     // Function Start
     $scope.init = function() {
+        $('#preloading').css("display", "none");
         const messaging = firebase.messaging();
         messaging.requestPermission()
         .then(function(){
@@ -23,14 +24,32 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
     $scope.login = function(){
         $('#preloading').css("display", "block");
         accountService.login().then(function(){
-            if(accountService.getUser() != null){
-                userService.updateInfo().then(function(){
-                    $rootScope.$apply(function() {
+            accountService.getUser().then(function(resolve){
+                if(resolve != null){
+                    userService.updateInfo().then(function(){
+                        $rootScope.$apply(function() {
+                            $('#preloading').css("display", "none");
+                            $location.path("/profile");
+                        });
+                    }).catch(function(reject){
+                        console.log(reject);
                         $('#preloading').css("display", "none");
-                        $location.path("/profile");
-                    });
-                })
-            }
+                        Materialize.toast('Cannot login err:03', 4000); 
+                    })
+                } else {
+                    console.log(reject);
+                    $('#preloading').css("display", "none");
+                    Materialize.toast('Cannot login err:02', 4000); 
+                }
+            }).catch(function(reject){
+                console.log(reject);
+                $('#preloading').css("display", "none");
+                Materialize.toast('Cannot login err:02', 4000); 
+            })
+        }).catch(function(reject){
+            console.log(reject);
+            $('#preloading').css("display", "none");
+            Materialize.toast('Cannot login err:01', 4000); 
         })
     }
     // Function End
@@ -41,7 +60,7 @@ myApp.controller('LoginController', function($scope, $location, $rootScope, acco
 });
 
 
-myApp.controller('ProfileController', function($scope, userService, accountService) {
+myApp.controller('ProfileController', function($scope, $location, urlService, userService, accountService) {
     // Parameter Start
     $scope.form = {
         displayName: '',
@@ -57,20 +76,31 @@ myApp.controller('ProfileController', function($scope, userService, accountServi
     // Function Start
     $scope.init = function(){
         $('#preloading').css("display", "block");
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-               userService.getInfo(accountService.getUserInfo().uid).then(function(result){
-                   $scope.form = result;
-                   $scope.$apply();
-                   $('#preloading').css("display", "none");
-               })
+        accountService.getUserInfo().then(function(resolve){
+            console.log("resolve", resolve);
+            if(resolve != null){
+                userService.getInfo(resolve.uid).then(function(resolve){
+                    $scope.form = resolve;
+                    $scope.$apply();
+                    $('#preloading').css("display", "none");
+                }).catch(function(reject){
+                    $('#preloading').css("display", "none");
+                    console.log(reject);
+                })
+            } else {
+                $('#preloading').css("display", "none");
             }
-        });
+        }).catch(function(reject){
+            $('#preloading').css("display", "none");
+            console.log(reject);
+        })
     };
 
     $scope.update = function(){
-        userService.setInfo($scope.form).then(function(){
+        userService.setInfo($scope.form).then(function(resolve){
             Materialize.toast('Update Success', 4000); 
+        }).catch(function(reject){
+            console.log(reject);
         });
     };
     // Function End
