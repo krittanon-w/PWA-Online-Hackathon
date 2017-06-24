@@ -94,12 +94,23 @@ const user = {
                 });
         });
     },
+    getUsers() {
+        return new Promise(function(resolve, reject) {
+            firebase.database().ref('users').once('value')
+                .then(function(snapshot) {
+                    console.log('Snapshot value: ', snapshot.val());
+                    return resolve(snapshot.val());
+                }).catch((error) => {
+                    return reject(error);
+                });
+        });
+    },
     getInfo(uid) {
-        return new Promise(function(result, reject) {
+        return new Promise(function(resolve, reject) {
             firebase.database().ref('users/' + uid).once('value')
                 .then(function(snapshot) {
                     console.log('Snapshot value: ', snapshot.val());
-                    return result(snapshot.val());
+                    return resolve(snapshot.val());
                 }).catch((error) => {
                     return reject(error);
                 });
