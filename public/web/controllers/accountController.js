@@ -40,18 +40,28 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
 myApp.controller('ProfileController', function($scope, userService, accountService) {
     // Parameter Start
     $scope.form = {
-        displayName: 'sss',
+        displayName: '',
         firstName: '',
         lastName: '',
         age: '',
         gender: '',
-        email: 'dsds',
+        email: '',
         photoURL: '', 
     }
     // Parameter End
 
     // Function Start
     $scope.init = function(){
+        $scope.form.gender = 'male';
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+               userService.getInfo(accountService.getUserInfo().uid).then(function(result){
+                   console.log(result.firstName);
+                   $scope.form = result;
+                   $scope.$apply();
+               })
+            }
+        });
     };
 
     $scope.update = function(){
