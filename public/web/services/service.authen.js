@@ -1,7 +1,11 @@
 const auth = {
-    login() {
+    login(provider) {
         console.log('login: called')
-        return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        if (provider == 'github') provider = new firebase.auth.GithubAuthProvider()
+        else if (provider == 'facebook') provider = new firebase.auth.FacebookAuthProvider()
+        else if (provider == 'google') provider = new firebase.auth.GoogleAuthProvider()
+        else provider = new firebase.auth.GoogleAuthProvider()
+        return firebase.auth().signInWithRedirect(provider)
             .then((result) => {
                 console.log('login: success', result)
             })

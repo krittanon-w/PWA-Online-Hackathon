@@ -20,20 +20,21 @@ $(document).ready(function () {
 
 
 
-//    dtree.getPrediction({person: 'Homer', hairLength: 0, weight: 250, age: 36})
-//         .then((predic) => {
-//             console.log(predic)
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         })
-    matching.getUsers("A")
-        .then((users)=>{
-            console.log(users)
+   dtree.getPrediction({person: 'Homer', hairLength: 0, weight: 250, age: 36})
+        .then((predic) => {
+            console.log(predic)
         })
-        .catch((error)=>{
+        .catch((error) => {
             console.log(error)
         })
+
+    // matching.getUsers("A")
+    //     .then((users)=>{
+    //         console.log(users)
+    //     })
+    //     .catch((error)=>{
+    //         console.log(error)
+    //     })
 
         var data =
     [{person: 'Homer', hairLength: 0, weight: 250, age: 36, sex: 'A'},
