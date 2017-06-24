@@ -94,16 +94,21 @@
                     </div>
                     <div class="card-content center">
                         <span class="card-title">{{account.displayName}}({{account.age}})</span>
-                        <a class="waves-effect waves-light btn full-width" ng-click="choose(key)">Add Talk</a>
+                        <a class="waves-effect waves-light btn full-width" ng-click="addTalk(key)">Add Talk</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container" ng-hide="show.select">
-            <div class="card red lighten-3">
+            <div class="card red lighten-3" ng-show="show.warn">
                 <div class="card-content white-text">
                     <span class="card-title">Please answer the questions first!!!</span>
                     <p>Your answer will predict your favorite type</p>
+                </div>
+            </div>
+            <div class="card red lighten-3" ng-hide="show.warn">
+                <div class="card-content white-text">
+                    <span class="card-title">You can Add Talk just onec in 24 hours</span>
                 </div>
             </div>
         </div>
