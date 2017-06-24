@@ -1,1 +1,15 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
+
+<div class="row" ng-repeat="(key,account) in accounts">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-image">
+                <img ng-src="{{account.photoURL}}">
+            </div>
+            <div class="card-content center">
+                <span class="card-title">{{account.displayName}}({{account.age}})</span>
+                <a class="waves-effect waves-light btn full-width" ng-click="choose(key)">Add Talk</a>
+            </div>
+        </div>
+    </div>
+</div>
