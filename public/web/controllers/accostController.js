@@ -1,7 +1,7 @@
 var myApp = angular.module("app.accost", []);
 
 
-myApp.controller('SelectController', function($scope, $location, urlService, messageService, matchingService, userService, accountService, dtreeService) {
+myApp.controller('SelectController', function($scope, $location, $http, urlService, messageService, matchingService, userService, accountService, dtreeService) {
     // Parameter Start
     $scope.accounts = "";
     $scope.show = {
@@ -95,7 +95,8 @@ myApp.controller('SelectController', function($scope, $location, urlService, mes
     };
 
     $scope.addTalk = function(uid){
-        messageService.addTalk(uid).then(function(resolve){
+        console.log("sss");
+        messageService.addTalk($http, uid).then(function(resolve){
         }).catch(function(reject){
         })
     };
