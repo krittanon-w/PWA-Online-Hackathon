@@ -23,9 +23,7 @@ myApp.controller('LoginController', function($scope, $location, accountService, 
     $scope.login = function(){
         accountService.login().then(function(){
             if(accountService.getUser() != null){
-                console.log('get');
                 userService.updateInfo().then(function(){
-                    console.log('up');
                     window.location.href = urlService.server()+"/profile";
                 })
             }
