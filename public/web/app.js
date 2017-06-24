@@ -36,6 +36,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
              permission.check();
           },
         },
+    }).when('/chat', {
+        templateUrl: './web/views/chat.html',
+        controller: 'ChatController',
+        resolve: {
+          function(permission){
+             permission.check();
+          },
+        },
     })
 }]);
 

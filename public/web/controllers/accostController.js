@@ -112,7 +112,7 @@ myApp.controller('SelectController', function($scope, $location, urlService, mes
     $scope.init();
 });
 
-myApp.controller('ListController', function($scope, $location, $q, urlService, messageService, userService) {
+myApp.controller('ListController', function($scope, $location, urlService, messageService, userService, chatFactory) {
     // Parameter Start
      $scope.accounts = [];
      var promises = [];
@@ -141,8 +141,36 @@ myApp.controller('ListController', function($scope, $location, $q, urlService, m
         }).catch(function(reject){
         })
     };
+
+    $scope.talk = function(uid){
+        chatFactory.setUid(uid);
+        window.location.href = urlService.server()+"/chat";
+    }
     // Function End
 
+    // Directive Start
+    $scope.header = {
+        delegates: {
+        },
+        configs: {
+        },
+    };
+    // Directive End
+    $scope.init();
+});
+
+myApp.controller('ChatController', function($scope, $location, chatFactory) {
+    // Parameter Start
+    var uid = 0;
+    // Parameter End
+
+    // Function Start
+    $scope.init = function() {
+        uid = chatFactory.getUid();
+        console.log(uid);
+    };
+    // Function End
+    
     // Directive Start
     $scope.header = {
         delegates: {

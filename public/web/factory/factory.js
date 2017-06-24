@@ -1,6 +1,7 @@
 var myApp = angular.module("app.factory", []);
 
 myApp.factory('authFactory', authFactory);
+myApp.factory('chatFactory', chatFactory);
 
 function authFactory() {
     var authObject = {
@@ -32,6 +33,21 @@ function authFactory() {
             authObject.photoURL = localStorage.getItem('photoURL');
             authObject.age = localStorage.getItem('age');
             return authObject;
+        },
+    };
+}
+
+
+
+function chatFactory() {
+    var uid = "";
+
+    return {
+        setUid: function (input) {
+            uid = input;
+        },
+        getUid: function () {
+            return uid;
         },
     };
 }

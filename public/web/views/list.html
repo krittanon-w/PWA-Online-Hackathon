@@ -1,7 +1,7 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
 
-<ul class="collection" ng-show="show.main">
-    <li class="collection-item avatar" ng-repeat="account in accounts">
+<ul class="collection mar-top" ng-show="show.main">
+    <li class="collection-item avatar" ng-repeat="account in accounts" ng-click="talk(account.uid)">
         <img ng-src="{{account.photoURL}}" alt="" class="circle">
         <span class="title">{{account.displayName}}</span>
         <a class="secondary-content"><i class="material-icons">chat_bubble</i></a>
