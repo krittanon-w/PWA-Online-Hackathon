@@ -6,6 +6,7 @@ myApp.service('userService', userService);
 myApp.service('matchingService', matchingService);
 myApp.service('dtreeService', dtreeService);
 myApp.service('messageService', messageService);
+myApp.service('gpsService', gpsService);
 
 function accountService($firebaseAuth) {
     return auth;
@@ -33,4 +34,8 @@ function dtreeService() {
 
 function messageService() {
     return messaging;
+}
+
+function  gpsService() {
+    return  gps;
 }

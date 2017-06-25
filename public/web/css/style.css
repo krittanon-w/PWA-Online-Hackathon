@@ -52,8 +52,13 @@
 
 .down {
     position: relative;
-    top: 8px;
-    right: 10px;
+    top: 5px;
+    /*/right: 17px;*/
+}
+
+.gps {
+    position: relative;
+    top: 5px;
 }
 
 .chat {

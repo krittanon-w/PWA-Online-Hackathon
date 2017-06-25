@@ -45,57 +45,67 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
     };
 
     $scope.submit = function(uid){
-        $scope.show.select = false;
-        $scope.show.preloading = true;
-        $scope.show.main = false;
-        accountService.getUserInfo().then(function(resolve){
-            if(resolve != null){
-                userService.getInfo(resolve.uid).then(function(resolve){
-                    if(resolve != null){
-                        var traningData = {
-                            age: resolve.age,
-                            gender: resolve.gender,
-                            q1: $scope.questions[0],
-                            q2: $scope.questions[1],
-                            q3: $scope.questions[2],
-                            q4: $scope.questions[3],
-                            q5: $scope.questions[4],
-                        };
-                        dtreeService.getPrediction(traningData).then(function(resolve){
-                            if(resolve.decission != null){
-                                userService.updateType(resolve.decission).then(function(resolve){
-                                    $scope.show.select = true;
-                                    $scope.show.preloading = false;
-                                    $scope.show.main = true;
-                                    $scope.init();
-                                    Materialize.toast('Finish now you can meet your favorite type', 4000);
-                                }).catch(function(reject){
-                                    $scope.show.select = true;
-                                    $scope.show.preloading = false;
-                                    $scope.show.main = true;
-                                    Materialize.toast('Cannot login err:06', 4000); 
-                                })
-                            }
-                        }).catch(function(reject){
-                            $scope.show.select = true;
-                            $scope.show.preloading = false;
-                            $scope.show.main = true;
-                            Materialize.toast('Cannot login err:05', 4000); 
-                        })
-                    }
-                }).catch(function(reject){
-                    $scope.show.select = true;
-                    $scope.show.preloading = false;
-                    $scope.show.main = true;
-                    Materialize.toast('Cannot login err:04', 4000); 
-                });
+        var flag = true;
+        for(var count = 0 ; count < 5 ; count++){
+            if($scope.questions[count] == undefined){
+                flag = false;
             }
-        }).catch(function(reject){
-            $scope.show.select = true;
-            $scope.show.preloading = false;
-            $scope.show.main = true;
-            Materialize.toast('Cannot login err:04', 4000); 
-        })
+        }
+        if(flag){
+            $scope.show.select = false;
+            $scope.show.preloading = true;
+            $scope.show.main = false;
+            accountService.getUserInfo().then(function(resolve){
+                if(resolve != null){
+                    userService.getInfo(resolve.uid).then(function(resolve){
+                        if(resolve != null){
+                            var traningData = {
+                                age: resolve.age,
+                                gender: resolve.gender,
+                                q1: $scope.questions[0],
+                                q2: $scope.questions[1],
+                                q3: $scope.questions[2],
+                                q4: $scope.questions[3],
+                                q5: $scope.questions[4],
+                            };
+                            dtreeService.getPrediction(traningData).then(function(resolve){
+                                if(resolve.decission != null){
+                                    userService.updateType(resolve.decission).then(function(resolve){
+                                        $scope.show.select = true;
+                                        $scope.show.preloading = false;
+                                        $scope.show.main = true;
+                                        $scope.init();
+                                        Materialize.toast('Finish now you can meet your favorite type', 4000);
+                                    }).catch(function(reject){
+                                        $scope.show.select = true;
+                                        $scope.show.preloading = false;
+                                        $scope.show.main = true;
+                                        Materialize.toast('Cannot login err:06', 4000); 
+                                    })
+                                }
+                            }).catch(function(reject){
+                                $scope.show.select = true;
+                                $scope.show.preloading = false;
+                                $scope.show.main = true;
+                                Materialize.toast('Cannot login err:05', 4000); 
+                            })
+                        }
+                    }).catch(function(reject){
+                        $scope.show.select = true;
+                        $scope.show.preloading = false;
+                        $scope.show.main = true;
+                        Materialize.toast('Cannot login err:04', 4000); 
+                    });
+                }
+            }).catch(function(reject){
+                $scope.show.select = true;
+                $scope.show.preloading = false;
+                $scope.show.main = true;
+                Materialize.toast('Cannot login err:04', 4000); 
+            })
+        } else {
+            Materialize.toast('Please fill all questions', 4000); 
+        }
     };
 
     $scope.addTalk = function(uid){
@@ -150,8 +160,7 @@ myApp.controller('ListController', function($scope, $location, urlService, messa
     };
 
     $scope.talk = function(uid){
-        chatFactory.setUid(uid);
-        window.location.href = urlService.server()+"/chat";
+        window.location.href = urlService.server()+"/chat/"+uid;
     }
     // Function End
 
@@ -166,7 +175,7 @@ myApp.controller('ListController', function($scope, $location, urlService, messa
     $scope.init();
 });
 
-myApp.controller('ChatController', function($scope, $location, chatFactory, messageService) {
+myApp.controller('ChatController', function($scope, $location, $routeParams, chatFactory, messageService, gpsService) {
     // Parameter Start
     var uid = 0;
     $scope.messages = [];
@@ -175,8 +184,7 @@ myApp.controller('ChatController', function($scope, $location, chatFactory, mess
 
     // Function Start
     $scope.init = function() {
-        uid = chatFactory.getUid();
-        console.log(uid);
+        uid = $routeParams.id;
          messageService.getMessages(uid,function(message, subObj){
              console.log(message);
             $scope.messages.push({name: Object.keys(message)[0], value: Object.values(message)[0]});
@@ -190,6 +198,28 @@ myApp.controller('ChatController', function($scope, $location, chatFactory, mess
             messageService.addMessage(uid,$scope.text).then(function(){
             }).catch(function(){
             })
+            $scope.text = "";
+        }
+    }
+
+    $scope.sendGPS = function(){
+        console.log(uid);
+        gpsService.getLocation().then(function(result){
+            console.log(result);
+            var gps = "https://www.google.com/maps/search/?api=1&query="+result.lat+","+result.lng;
+            messageService.addMessage(uid,gps).then(function(){
+            }).catch(function(reject){
+                console.log(reject);
+            })
+        }).catch(function(reject){
+        })
+    }
+
+    $scope.chkUrlify = function(text){
+        if(text.search("https://") >= 0 || text.search("http://") >= 0){
+            return false;
+        } else {
+            return true;
         }
     }
  

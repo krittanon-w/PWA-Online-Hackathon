@@ -13,19 +13,23 @@
             </div>
             <div class="card red lighten-3" style="border-radius: 15px; padding: 0px">
                 <div class="card-content white-text" style="padding: 10px">
-                <p style="word-wrap: break-word;">{{message.value}}</p>
+                <a style="word-wrap: break-word;" href="{{message.value}}" ng-hide="chkUrlify(message.value)">{{message.value}}</a>
+                <p style="word-wrap: break-word;" ng-show="chkUrlify(message.value)">{{message.value}}</p>
                 </div>
             </div>
         </li>
     </ul>
 </div>
-<div class=" blue-grey darken-1 white-text chatbox" style="padding-left: 0px;">
+<div class=" blue-grey darken-1 white-text chatbox" style="padding-left: 0px; padding-right: 0px">
     <div class="row">
-        <div class="col s10">
+        <div class="col s2">
+            <a class="btn-floating gps center" ng-click="sendGPS()"><i class="material-icons">location_on</i></a>
+        </div>
+        <div class="col s8">
             <input  type="text" ng-model="text">
         </div>
         <div class="col s2">
-            <button class="waves-effect waves-light btn down z-depth-1" ng-click="send()">Send</button>
+            <a class="btn-floating down center" ng-click="send()"><i class="material-icons">send</i></a>
         </div>
     </div>
 </div>
