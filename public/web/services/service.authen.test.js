@@ -8,7 +8,11 @@ $(document).ready(function () {
     //         console.log(error)
     //     })
 
+<<<<<<< HEAD
     matching.getUsers('104610665900721852172', 'excitings')
+=======
+    matching.getUsers('104610665900721852172', 'exciting')
+>>>>>>> 645882e50e9bdef17cb9de0ffa54f98d6ffd56d0
         .then((usersMatch)=>{
             console.log(usersMatch)
         })

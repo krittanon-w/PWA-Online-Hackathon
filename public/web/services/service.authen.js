@@ -255,7 +255,15 @@ const matching = {
                 then((snapshots) => {
                     if(snapshots.val() != null){
                         var matchUsers = snapshots.val()
-                        delete matchUsers[myUid]
+                        delete matchUsers[myUid] //
+                        for(var key in matchUsers){
+                            var friendList = matchUsers[key].messages
+                            if(friendList!=undefined){
+                                for(var fKey in friendList){
+                                    if(fKey==myUid) delete matchUsers[key]
+                                }
+                            }
+                        }
                         resolve(matchUsers)
                     }
                     resolve({})
@@ -540,5 +548,5 @@ const gps = {
         })
     }
 
-
 }
+
