@@ -4,11 +4,11 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://rawgit.com/lagodiuk/decision-tree-js/master/decision-tree-min.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBnHcxk2PN7zNfw2JVjnNY5doIhu8sk1sY&libraries=geometry"></script>
 </head>
 
 <body>
-    <input type="button" onclick="auth.login()" value="Login">
+    <input type="button" onclick="auth.login('google')" value="Login">
     <input type="button" onclick="auth.logout()" value="Logout">
     <input type="button" onclick="auth.getUser()" value="getUser">
     <input type="button" onclick="auth.getUserInfo()" value="getUserInfo">
