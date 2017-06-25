@@ -472,6 +472,9 @@ const messaging = {
     },
 };
 
+var ourMap = null
+var ourPin = []
+
 const gps = {
     getLocation(){
         return new Promise((resolve, reject)=>{
@@ -479,7 +482,7 @@ const gps = {
                 var gps = geo.coords
                 resolve({
                     lat: gps.latitude,
-                    lng: gps.latitude
+                    lng: gps.longitude
                 })
             },
             (error)=>{
@@ -504,17 +507,17 @@ const gps = {
             fillColor: '#FF0000',
             fillOpacity: 0.35,
             center: location,
-            radius: 20
+            radius: 100
         })
         return area
     },
-    updateLocation(id, type){
+    upSertLocation(myId, myType){
         return new Promise((resolve, reject)=>{
             this.getLocation()
                 .then((location)=>{
-                    firebase.database().ref('locations/'+id).update({
+                    firebase.database().ref('locations/'+myId).update({
                             location: location,
-                            type: type
+                            type: myType
                         })
                         .then((result) => {
                             resolve(result);
@@ -528,48 +531,90 @@ const gps = {
                 })
         })
     },
-    getUsersInArea(){
+    getUsersInArea(myUid, myType){
         var _self = this
         return new Promise((resolve, reject)=>{
-            console.log("getUserinfo")
-            auth.getUserInfo()
-                .then((myInfo)=>{
-                    console.log("updatelocation")
-                    _self.updateLocation(myInfo.uid, myInfo.type)
-                        .then((result)=>{
-                            console.log("getAllUsersLocation")
-                            firebase.database().ref('locations').once('value')
-                                .then((snapshots) => {
-                                    var users_location = []
-                                    var result = snapshots.val()
-                                    for(var key in result) {
-                                        if(key!=myInfo.uid){
-                                            if(_self.isInInArea(myInfo.uid, result[key].location)){
-                                                users_location.push({
-                                                     uid: key,
-                                                    type: result[key].type
-                                                })
-                                            }
-                                        }
-                                        else{
-                                            console.log("me me me")
-                                        }
-                                    };
-                                    resolve(users_location);
-                                })
-                                .catch((error) => {
-                                    reject(error);
-                                })
+            console.log("updatelocation")
+            _self.upSertLocation(myUid, myType)
+                .then((result)=>{
+                    console.log("getAllUsersLocation")
+                    firebase.database().ref('locations').once('value')
+                        .then((snapshots) => {
+                            var users_location = []
+                            var result = snapshots.val()
+                            for(var key in result) { // key = user_id
+                                if(key!=myUid){
+                                    if(_self.isInInArea(result[myUid].location, result[key].location)){
+                                        users_location.push({
+                                            uid: key,
+                                            location: result[key].location,
+                                            type: result[key].type
+                                        })
+                                    }
+                                }
+                            }
+                            resolve({
+                                me: result[myUid].location,
+                                users: users_location
+                            });
                         })
-                        .catch((error)=>{
-                            reject(error)
+                        .catch((error) => {
+                            reject(error);
                         })
                 })
                 .catch((error)=>{
                     reject(error)
                 })
         })
+    },
+    updateGoogleMap(elementId, ourLocation){
+      for(key in ourPin){
+          var pin = ourPin[key]
+          pin.setMap(null)
+      }
+      var myLoc = ourLocation.me
+
+      if(ourMap == null){
+        ourMap = new google.maps.Map(document.getElementById(elementId), {
+            center: myLoc,
+            zoom: 18
+        });
+        ourMap.setCenter(myLoc)
+      }
+      else{
+          ourMap.panTo(myLoc)
+      }
+
+      var me_marker = new google.maps.Marker({
+        position: myLoc,
+        map: ourMap,
+        icon: 'http://www.kusakoon.com/pin4.png'
+      })
+
+      ourPin.push(me_marker)
+
+      for( key in ourLocation.users){
+        var userLoc = ourLocation.users[key].location
+        var user_marker = new google.maps.Marker({
+            position: userLoc,
+            map: ourMap,
+            icon: 'http://www.kusakoon.com/pin3.png'
+        })
+        ourPin.push(user_marker)
+      }
+
+      var riskArea = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.5,
+            strokeWeight: 1,
+            fillColor: '#FF0000',
+            fillOpacity: 0.1,
+            map: ourMap,
+            center: ourLocation.me,
+            radius: 100
+        });
+
+
+      ourPin.push(riskArea)
     }
-
-
 }
