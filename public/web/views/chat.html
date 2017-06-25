@@ -2,18 +2,12 @@
 <div class="container mar-top" style="max-width: 750px;">
     <ul class="chat" >
         <li ng-repeat="message in messages">
-            <!--<div class="chip red lighten-3">
-                {{message.name}}
-            </div>
-            <div class="chip">
-                {{message.value}}
-            </div>-->
             <div class="chip" style="width: 100%; position: relative; top: 12px;">
                 <span style="word-wrap: break-word;">{{message.name}}</span>
             </div>
             <div class="card red lighten-3" style="border-radius: 15px; padding: 0px">
                 <div class="card-content white-text" style="padding: 10px">
-                <a style="word-wrap: break-word;" href="{{message.value}}" ng-hide="chkUrlify(message.value)">{{message.value}}</a>
+                <a style="word-wrap: break-word;" href="{{message.value}}" ng-hide="chkUrlify(message.value)">I AM HERE!!!</a>
                 <p style="word-wrap: break-word;" ng-show="chkUrlify(message.value)">{{message.value}}</p>
                 </div>
             </div>
