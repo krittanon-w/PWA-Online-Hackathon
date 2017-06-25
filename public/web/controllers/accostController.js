@@ -137,6 +137,7 @@ myApp.controller('ListController', function($scope, $location, urlService, messa
          main: false,
          preloading: true,
      }
+     var menu = 0;
     // Parameter End
 
     // Function Start
@@ -159,8 +160,23 @@ myApp.controller('ListController', function($scope, $location, urlService, messa
         })
     };
 
-    $scope.talk = function(uid){
-        window.location.href = urlService.server()+"/chat/"+uid;
+    $scope.menu = function(uid){
+        menu = uid;
+    }
+
+    $scope.talk = function(){
+        angular.element(document.querySelector('#modal')).modal('close');
+        window.location.href = urlService.server()+"/chat/"+menu;
+    }
+
+    $scope.delete = function(){
+        console.log(menu);
+        messageService.removeTalk(menu).then(function(resolve){
+            angular.element(document.querySelector('#modal')).modal('close');
+            window.location.reload();
+        }).catch(function(reject){
+            angular.element(document.querySelector('#modal')).modal('close');
+        })
     }
     // Function End
 

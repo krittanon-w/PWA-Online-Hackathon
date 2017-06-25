@@ -1,10 +1,10 @@
 <header invokes="header.invokes" delegates="header.delegates" configs="header.configs"></header>
 <div class="container" style="max-width: 750px;">
     <ul class="collection mar-top" ng-show="show.main" >
-        <li class="collection-item avatar" ng-repeat="account in accounts" ng-click="talk(account.uid)">
+        <li class="collection-item avatar" style="min-height: 60px" ng-repeat="account in accounts" ng-click="menu(account.uid)" data-target="modal">
             <img ng-src="{{account.photoURL}}" alt="" class="circle">
             <span class="title">{{account.displayName}}</span>
-            <a class="secondary-content"><i class="material-icons">chat_bubble</i></a>
+            <a class="secondary-content"> <i class="material-icons">list</i></a>
         </li>
     </ul>
 <div>
@@ -12,3 +12,27 @@
 <div class="children" ng-show="show.preloading">
     <span class="heartbeat-loader">Loading&#8230;</span>
 </div>
+
+<div id="modal" class="modal bottom-sheet">
+    <div class="modal-content">
+        <button class="btn waves-effect waves-light z-depth-1 full-width"  type="submit" name="action" ng-click="talk()">
+            Chat
+        </button>
+        <br>
+        <button class="btn waves-effect waves-light z-depth-1 full-width" style="margin-top: 20px;" type="submit" name="action" ng-click="delete()">
+            Delete
+        </button>
+    </div>
+  </div>
+</div>
+          
+<script type="text/javascript">
+$(document).ready(function(){
+	// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+	$('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+    }
+  );
+});
+
+</script>
