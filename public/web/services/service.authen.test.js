@@ -10,10 +10,14 @@ $(document).ready(function () {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     matching.getUsers('104610665900721852172', 'excitings')
 =======
     matching.getUsers('104610665900721852172', 'exciting')
 >>>>>>> 645882e50e9bdef17cb9de0ffa54f98d6ffd56d0
+=======
+    matching.getUsers('104610665900721852172', 'exciting')
+>>>>>>> caf1e669bc32baca7e25c62e9ccfc75f67dfe6f2
 =======
     matching.getUsers('104610665900721852172', 'exciting')
 >>>>>>> caf1e669bc32baca7e25c62e9ccfc75f67dfe6f2
