@@ -10,6 +10,7 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
         select: false,
         warn: true,
     }
+    $scope.type = "",
     $scope.questions = [];
     // Parameter End
 
@@ -17,9 +18,11 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
     $scope.init = function() {
         accountService.getUserInfo().then(function(resolve){
             if(resolve != null){
+                var uid = resolve.uid
                 userService.getInfo(resolve.uid).then(function(resolve){
                     if(resolve.type != undefined){
-                        matchingService.getUsers(resolve.type).then(function(resolve){
+                        $scope.type = resolve.type;
+                        matchingService.getUsers(uid, resolve.type).then(function(resolve){
                             $scope.accounts = resolve;
                             $scope.show.select = true;
                             $scope.show.preloading = false;
@@ -174,6 +177,7 @@ myApp.controller('ChatController', function($scope, $location, chatFactory, mess
          messageService.getMessages(uid,function(message, subObj){
              console.log(message);
             $scope.messages.push({name: Object.keys(message)[0], value: Object.values(message)[0]});
+            window.scrollBy(0, 50);
             $scope.$apply();
         })
     };

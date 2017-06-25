@@ -246,15 +246,19 @@ const dtree = {
 }
 
 const matching = {
-    getUsers(type) {
+    getUsers(myUid, type) {
         console.log("matching.getUsers: called")
         return new Promise((resolve, reject) => {
             var users = [];
             firebase.database().ref('users').orderByChild('type').equalTo(type).
                 once('value').
                 then((snapshots) => {
-                    // console.log("snapshots: ", snapshots.val())
-                    resolve(snapshots.val());
+                    if(snapshots.val() != null){
+                        var matchUsers = snapshots.val()
+                        delete matchUsers[myUid]
+                        resolve(matchUsers)
+                    }
+                    resolve({})
                 }).
                 catch((error) => {
                     reject(error);
@@ -437,3 +441,104 @@ const messaging = {
     },
 };
 
+const gps = {
+    getLocation(){
+        return new Promise((resolve, reject)=>{
+            navigator.geolocation.getCurrentPosition((geo)=>{
+                var gps = geo.coords
+                resolve({
+                    lat: gps.latitude,
+                    lng: gps.latitude
+                })
+            },
+            (error)=>{
+                console.log("GPS Not Allow By User!!!")
+                reject(error)
+            },{timeout: 20000})
+        })
+    },
+    isInInArea(meLoc, userLoc){
+        var user_location = new google.maps.LatLng(userLoc)
+        area = this.createCircle(meLoc)
+        if (google.maps.geometry.spherical.computeDistanceBetween(user_location, area.getCenter()) <= area.getRadius()) {
+          return true
+        }
+        return false
+    },
+    createCircle(location){
+        var area = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.7,
+            strokeWeight: 1,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            center: location,
+            radius: 20
+        })
+        return area
+    },
+    updateLocation(id, type){
+        return new Promise((resolve, reject)=>{
+            this.getLocation()
+                .then((location)=>{
+                    firebase.database().ref('locations/'+id).update({
+                            location: location,
+                            type: type
+                        })
+                        .then((result) => {
+                            resolve(result);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                })
+                .catch((error)=>{
+                    reject(error)
+                })
+        })
+    },
+    getUsersInArea(){
+        var _self = this
+        return new Promise((resolve, reject)=>{
+            console.log("getUserinfo")
+            auth.getUserInfo()
+                .then((myInfo)=>{
+                    console.log("updatelocation")
+                    _self.updateLocation(myInfo.uid, myInfo.type)
+                        .then((result)=>{
+                            console.log("getAllUsersLocation")
+                            firebase.database().ref('locations').once('value')
+                                .then((snapshots) => {
+                                    var users_location = []
+                                    var result = snapshots.val()
+                                    for(var key in result) {
+                                        if(key!=myInfo.uid){
+                                            if(_self.isInInArea(myInfo.uid, result[key].location)){
+                                                users_location.push({
+                                                     uid: key,
+                                                    type: result[key].type
+                                                })
+                                            }
+                                        }
+                                        else{
+                                            console.log("me me me")
+                                        }
+                                    };
+                                    resolve(users_location);
+                                })
+                                .catch((error) => {
+                                    reject(error);
+                                })
+                        })
+                        .catch((error)=>{
+                            reject(error)
+                        })
+                })
+                .catch((error)=>{
+                    reject(error)
+                })
+        })
+    }
+
+
+}

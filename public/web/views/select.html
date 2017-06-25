@@ -86,6 +86,11 @@
         </div>
     </div>
     <div id="t2" class="col s12">
+        <div class="container" ng-show="show.select">
+            <div class="collection">
+                <a class="collection-item center">{{type}} Type</a>
+            </div>
+        </div>
         <div class="row" ng-repeat="(key,account) in accounts" ng-show="show.select">
             <div class="col s12">
                 <div class="card">
