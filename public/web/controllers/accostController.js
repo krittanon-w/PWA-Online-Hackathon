@@ -98,6 +98,7 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
     };
 
     $scope.addTalk = function(uid){
+        console.log(uid);
         messageService.addTalk($http, uid).then(function(resolve){
             window.location.href = urlService.server()+"/list";
         }).catch(function(reject){

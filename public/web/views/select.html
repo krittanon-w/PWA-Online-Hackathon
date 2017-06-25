@@ -5,7 +5,7 @@
         <li class="tab col s3"><a class="active" href="#t2">Select</a></li>
     </ul>
     <div id="t1" class="col s12">
-        <div class="row">
+        <div class="container" style="max-width: 750px;">
             <div class="col s12 m6">
                 <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
@@ -86,25 +86,26 @@
         </div>
     </div>
     <div id="t2" class="col s12">
-        <div class="container" ng-show="show.select">
+        <div class="container" ng-show="show.select" style="max-width: 750px;">
             <div class="collection">
                 <a class="collection-item center">{{type}} Type</a>
             </div>
-        </div>
-        <div class="row" ng-repeat="(key,account) in accounts" ng-show="show.select">
-            <div class="col s12">
-                <div class="card">
-                    <div class="card-image">
-                        <img ng-src="{{account.photoURL}}">
-                    </div>
-                    <div class="card-content center">
-                        <span class="card-title">{{account.displayName}}({{account.age}})</span>
-                        <a class="waves-effect waves-light btn full-width" ng-click="addTalk(key)">Add Talk</a>
+            <div class="row" ng-repeat="(key,account) in accounts" ng-show="show.select">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-image">
+                            <img ng-src="{{account.photoURL}}">
+                        </div>
+                        <div class="card-content center">
+                            <span class="card-title">{{account.displayName}}({{account.age}})</span>
+                            <a class="waves-effect waves-light btn full-width" ng-click="addTalk(key)">Add Talk</a>
+                        </div>
                     </div>
                 </div>
+            
             </div>
         </div>
-        <div class="container" ng-hide="show.select">
+        <div class="container" ng-hide="show.select" style="max-width: 750px;">
             <div class="card red lighten-3" ng-show="show.warn">
                 <div class="card-content white-text">
                     <span class="card-title">Please answer the questions first!!!</span>
