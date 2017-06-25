@@ -8,10 +8,12 @@
             <div class="chip">
                 {{message.value}}
             </div>-->
-            <div class="card blue-grey red lighten-3">
-                <div class="card-content white-text">
-                <span class="card-title">{{message.name}}</span>
-                <p>{{message.value}}</p>
+            <div class="chip" style="width: 100%; position: relative; top: 12px;">
+                <span >{{message.name}}</span>
+            </div>
+            <div class="card red lighten-3" style="border-radius: 15px; padding: 0px">
+                <div class="card-content white-text" style="padding: 10px">
+                <p style="word-wrap: break-word;">{{message.value}}</p>
                 </div>
             </div>
         </li>
