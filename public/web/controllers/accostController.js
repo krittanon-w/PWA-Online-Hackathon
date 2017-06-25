@@ -29,6 +29,7 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
                             $scope.show.main = true;
                             $scope.$apply();
                         }).catch(function(reject){
+                            console.log(reject);
                         });
                     } else {
                         $scope.show.warn = true;
@@ -102,6 +103,7 @@ myApp.controller('SelectController', function($scope, $location, $http, urlServi
         messageService.addTalk($http, uid).then(function(resolve){
             window.location.href = urlService.server()+"/list";
         }).catch(function(reject){
+            window.location.href = urlService.server()+"/list";
         })
     };
     // Function End

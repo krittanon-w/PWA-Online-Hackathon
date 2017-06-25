@@ -264,6 +264,29 @@ const matching = {
                                 }
                             }
                         }
+                        var i = 0;
+                        Object.size = function(obj) {
+                            var size = 0, key;
+                            for (key in obj) {
+                                if (obj.hasOwnProperty(key)) size++;
+                            }
+                            return size;
+                        };
+                        var size = Object.size(matchUsers)
+                        var stop = size-4
+                        if(size>4){
+                            while(true){ // fuck 55555555 but it work // random user quggest
+                                for(var pKey in  matchUsers){
+                                    if(Math.random()>0.5){
+                                        // matchUsersPick.push(matchUsers[pKey])
+                                        delete matchUsers[pKey]
+                                        i++;
+                                        if(i>=stop) break
+                                    }
+                                }
+                                if(i>=stop) break
+                            }
+                        }
                         resolve(matchUsers)
                     }
                     resolve({})
@@ -548,5 +571,5 @@ const gps = {
         })
     }
 
-}
 
+}
