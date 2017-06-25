@@ -8,7 +8,7 @@ $(document).ready(function () {
     //         console.log(error)
     //     })
 
-    matching.getUsers('104610665900721852172', 'excitings')
+    matching.getUsers('104610665900721852172', 'exciting')
         .then((usersMatch)=>{
             console.log(usersMatch)
         })
