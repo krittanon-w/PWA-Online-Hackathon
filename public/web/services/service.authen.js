@@ -479,7 +479,7 @@ const gps = {
                 var gps = geo.coords
                 resolve({
                     lat: gps.latitude,
-                    lng: gps.latitude
+                    lng: gps.longitude
                 })
             },
             (error)=>{
@@ -508,13 +508,13 @@ const gps = {
         })
         return area
     },
-    updateLocation(id, type){
+    updateLocation(myId, myType){
         return new Promise((resolve, reject)=>{
             this.getLocation()
                 .then((location)=>{
-                    firebase.database().ref('locations/'+id).update({
+                    firebase.database().ref('locations/'+myId).update({
                             location: location,
-                            type: type
+                            type: myType
                         })
                         .then((result) => {
                             resolve(result);
@@ -528,25 +528,25 @@ const gps = {
                 })
         })
     },
-    getUsersInArea(){
+    getUsersInArea(myUid, myType){
         var _self = this
         return new Promise((resolve, reject)=>{
             console.log("getUserinfo")
-            auth.getUserInfo()
-                .then((myInfo)=>{
+            // auth.getUserInfo()
+            //     .then((myInfo)=>{
                     console.log("updatelocation")
-                    _self.updateLocation(myInfo.uid, myInfo.type)
+                    _self.updateLocation(myUid, myType)
                         .then((result)=>{
                             console.log("getAllUsersLocation")
                             firebase.database().ref('locations').once('value')
                                 .then((snapshots) => {
                                     var users_location = []
                                     var result = snapshots.val()
-                                    for(var key in result) {
-                                        if(key!=myInfo.uid){
-                                            if(_self.isInInArea(myInfo.uid, result[key].location)){
+                                    for(var key in result) { // key = user_id
+                                        if(key!=myUid){
+                                            if(_self.isInInArea(result[myUid].location, result[key].location)){
                                                 users_location.push({
-                                                     uid: key,
+                                                    uid: key,
                                                     type: result[key].type
                                                 })
                                             }
@@ -554,8 +554,11 @@ const gps = {
                                         else{
                                             console.log("me me me")
                                         }
-                                    };
-                                    resolve(users_location);
+                                    }
+                                    resolve({
+                                        me: result[myUid].location,
+                                        user: users_location
+                                    });
                                 })
                                 .catch((error) => {
                                     reject(error);
@@ -564,10 +567,10 @@ const gps = {
                         .catch((error)=>{
                             reject(error)
                         })
-                })
-                .catch((error)=>{
-                    reject(error)
-                })
+                // })
+                // .catch((error)=>{
+                //     reject(error)
+                // })
         })
     }
 
